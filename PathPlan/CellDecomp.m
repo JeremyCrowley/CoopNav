@@ -1,7 +1,7 @@
 % cell decomposition
 close all;clc;clear;
 
-E1 = CreateEnv2D(2,3);
+E1 = CreateEnv2D(7,6);
 
 
 %{
@@ -23,9 +23,9 @@ end
 %}
 
 
-flipud(E1.map)
+flipud(E1.map);
 
-G = MakeGraph(E1.map)
+G = MakeGraph(E1.map);
 
 
 plot(G)
