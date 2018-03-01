@@ -1,35 +1,31 @@
 % cell decomposition
 close all;clc;clear;
 
-E1 = CreateEnv2D(7,6);
 
 
-%{
-for i = 1:4
-    for j = 1:4 
-        E1 = AddSquare2D(E1,[1+4*j, 1+4*i],3,3);     
-    end
-end
+E1 = CreateEnv2D(25,25);
 
+% env, corner, length, height
+E1 = AddSquare2D(E1,[2,3],2,1);
+E1 = AddSquare2D(E1,[7,2],5,6);
+E1 = AddSquare2D(E1,[5,2],5,1);
+E1 = AddSquare2D(E1,[5,15],5,3);
+E1 = AddSquare2D(E1,[16,5],2,4);
+E1 = AddSquare2D(E1,[10,15],3,7);
+E1 = AddSquare2D(E1,[20,12],9,4);
 
-center = zeros(E1.numObj,2);
-for i = 1:E1.numObj
-    
-    center(i,:) = FindCenter2D(E1.objs(:,:,i));
-   
-    MakeObj2D(E1.objs(:,:,i));
-    
-end
-%}
-
-
-flipud(E1.map);
+% for visualization
+flipud(E1.map)
 
 G = MakeGraph(E1.map);
 
+% create larger lines for lower cost 
+LWidths = 10*(1./G.Edges.Weight);
+p = plot(G,'LineWidth',LWidths);
 
-plot(G)
+[path1,d] = shortestpath(G,1,600);
+highlight(p,path1,'EdgeColor','g');
 
-%xlim([0 20]);
-%ylim([0 20]);
+PlotGraph(G.Edges);
+
 
