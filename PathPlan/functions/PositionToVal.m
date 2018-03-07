@@ -4,6 +4,6 @@
 
 function value = PositionToVal(coordinate, length)
     
-    value = (coordinate(1)-1)*length+coordinate(2);
+    value = (coordinate(2)-1)*length+coordinate(1);
 
 end

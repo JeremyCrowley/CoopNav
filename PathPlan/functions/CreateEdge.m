@@ -40,9 +40,9 @@ function G = CreateEdge(G, node1Val, node1Pos, node2Val, node2Pos, length)
 	elseif(node1Val == 1 && node2Val == 1)
         
         if(diag)
-            weight = sqrt(8);
+            weight = sqrt(32);
         else
-            weight = 2;
+            weight = 4;
         end
         
 	% one node is obstacle boundary and the other is obstacle
@@ -53,7 +53,7 @@ function G = CreateEdge(G, node1Val, node1Pos, node2Val, node2Pos, length)
     
     elseif(node1Val == 2 && node2Val == 2)
         
-        weight = 1000;
+        weight = 2000;
         
 	% incorrect relation between two nodes
     else

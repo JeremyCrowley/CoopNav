@@ -1,4 +1,6 @@
 % p = PlotGraph(GraphEdges)
+% 
+
 function p = PlotGraph(GraphEdges)
 
     [m,n] = size(GraphEdges);
@@ -12,8 +14,8 @@ function p = PlotGraph(GraphEdges)
         endNodeCell1 = GraphEdges.EndNodes(i,1);
         endNodeCell2 = GraphEdges.EndNodes(i,2);
         
-        endNode1 = endNodeCell1{1}
-        endNode2 = endNodeCell2{1}
+        endNode1 = endNodeCell1{1};
+        endNode2 = endNodeCell2{1};
         
         comma1 = strfind(endNode1,',');
         par1 = strfind(endNode1,')');
@@ -28,15 +30,19 @@ function p = PlotGraph(GraphEdges)
         coord1 = [x1, y1];
         coord2 = [x2, y2];
         
-        if(table2array(GraphEdges(i,2)) == 1000)
-            color = 'r';
-        elseif(table2array(GraphEdges(i,2)) >= 2)
-            color = 'b';
+        if(table2array(GraphEdges(i,2)) == 2000)
+            color = [1 0 0];
+        elseif(table2array(GraphEdges(i,2)) == 1000)
+            color = [1 0.7 0];
+        elseif(table2array(GraphEdges(i,2)) == 4 || table2array(GraphEdges(i,2)) == sqrt(32))
+            color = [1 0.45 0];
+        elseif(table2array(GraphEdges(i,2)) == 2 || table2array(GraphEdges(i,2)) == sqrt(8))
+            color = [1 0.3 0];
         else
-            color = 'g';
+            color = [0 0 0];
         end
         
-        p = plot([coord1(1),coord2(1)],[coord1(2),coord2(2)],color);
+        p = plot([coord1(1),coord2(1)],[coord1(2),coord2(2)],'color',color);
         
         hold on
     end
