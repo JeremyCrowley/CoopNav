@@ -1,9 +1,12 @@
 % p = PlotGraph(GraphEdges)
 % 
+% plots the graph with colored edges based on the weight of the edge
+%
+% GraphEdges - the edges of the graph
 
-function p = PlotGraph(GraphEdges)
+function p = PlotGraph(graphEdges)
 
-    [m,n] = size(GraphEdges);
+    [m,n] = size(graphEdges);
     
     figure()
     hold on
@@ -11,8 +14,8 @@ function p = PlotGraph(GraphEdges)
     for i = 1:m
         
         % parse end nodes
-        endNodeCell1 = GraphEdges.EndNodes(i,1);
-        endNodeCell2 = GraphEdges.EndNodes(i,2);
+        endNodeCell1 = graphEdges.EndNodes(i,1);
+        endNodeCell2 = graphEdges.EndNodes(i,2);
         
         endNode1 = endNodeCell1{1};
         endNode2 = endNodeCell2{1};
@@ -30,13 +33,13 @@ function p = PlotGraph(GraphEdges)
         coord1 = [x1, y1];
         coord2 = [x2, y2];
         
-        if(table2array(GraphEdges(i,2)) == 2000)
+        if(table2array(graphEdges(i,2)) == 2000)
             color = [1 0 0];
-        elseif(table2array(GraphEdges(i,2)) == 1000)
+        elseif(table2array(graphEdges(i,2)) == 1000)
             color = [1 0.7 0];
-        elseif(table2array(GraphEdges(i,2)) == 4 || table2array(GraphEdges(i,2)) == sqrt(32))
+        elseif(table2array(graphEdges(i,2)) == 4 || table2array(graphEdges(i,2)) == sqrt(32))
             color = [1 0.45 0];
-        elseif(table2array(GraphEdges(i,2)) == 2 || table2array(GraphEdges(i,2)) == sqrt(8))
+        elseif(table2array(graphEdges(i,2)) == 2 || table2array(graphEdges(i,2)) == sqrt(8))
             color = [1 0.3 0];
         else
             color = [0 0 0];

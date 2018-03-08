@@ -13,7 +13,7 @@ E1 = AddSquare2D(E1,[2,3],2,1);
 
 
 radiusOfView = 1;
-startNode = PositionToVal([5,4],length)
+startNode = PositionToVal([5,4],length);
 
 A1 = CreateAgent(radiusOfView,startNode);
 %{

@@ -2,9 +2,9 @@
 %
 % creates an edge between coordinates node1Pos and node2Pos
 %
-% G - graph
-% node1Val - 0 for free space, 1 for obstacle boundary, 2 for obstacle
-% node1Pos - coordinate pair for a node
+% G         - graph
+% node1Val  - 0 for free space, 1 for obstacle boundary, 2 for obstacle
+% node1Pos  - coordinate pair for a node
 %
 %
 

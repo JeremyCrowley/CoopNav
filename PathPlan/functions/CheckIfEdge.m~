@@ -1,0 +1,16 @@
+% edgeBool = CheckIfEdge(env, nodeCoords)
+
+
+function edgeBool = CheckIfEdge(env, nodeCoords)
+    if(env.node(nodeCoords(1), nodeCoords(2)).discovered == 0)
+        edgeBool = 0;
+    else
+        for i = -1:1
+            for j = -1:1
+                if(env.node(nodeCoords(1)+i, nodeCoords(1)+j).discovered == 0)
+                    
+                end
+            end
+        end
+    end
+end
