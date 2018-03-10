@@ -65,6 +65,7 @@ function G = CreateEdge(G, node1Val, node1Pos, node2Val, node2Pos, length)
     node1 = PositionToVal(node1Pos,length);
     node2 = PositionToVal(node2Pos,length);
     
+    fprintf('edge between %d and %d\n',node1,node2);
     G = addedge(G,node1,node2,weight);
 
 end

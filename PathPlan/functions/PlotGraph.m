@@ -4,14 +4,14 @@
 %
 % GraphEdges - the edges of the graph
 
-function p = PlotGraph(graphEdges)
+function p = PlotGraph(graphEdges,env)
 
-    [m,n] = size(graphEdges);
+    [height,length] = size(graphEdges);
     
     figure()
     hold on
     grid on
-    for i = 1:m
+    for i = 1:height
         
         % parse end nodes
         endNodeCell1 = graphEdges.EndNodes(i,1);
@@ -36,18 +36,29 @@ function p = PlotGraph(graphEdges)
         if(table2array(graphEdges(i,2)) == 2000)
             color = [1 0 0];
         elseif(table2array(graphEdges(i,2)) == 1000)
-            color = [1 0.7 0];
+            color = [0 0.3 1];
         elseif(table2array(graphEdges(i,2)) == 4 || table2array(graphEdges(i,2)) == sqrt(32))
-            color = [1 0.45 0];
+            color = [0 0.45 1];
         elseif(table2array(graphEdges(i,2)) == 2 || table2array(graphEdges(i,2)) == sqrt(8))
-            color = [1 0.3 0];
+            color = [0 0.7 1];
         else
             color = [0 0 0];
         end
         
         p = plot([coord1(1),coord2(1)],[coord1(2),coord2(2)],'color',color);
-        
-        hold on
+
     end
+    
+    [height,length] = size(env.map);
+    
+    for i = 1:length
+        for j = 1:height
+            scatter(i,j,100,[0 0 0],'filled');
+        end
+    end
+        
+    
+    xlim([0 length+1]);
+    ylim([0 height+1]);
 
 end

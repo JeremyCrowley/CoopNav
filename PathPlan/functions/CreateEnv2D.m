@@ -3,8 +3,8 @@
 % creates a 2 dimensional map for simulation
 %
 
-function env = CreateEnv2D(length,height)
-    env.map = zeros(length,height);
+function env = CreateEnv2D(height,length)
+    env.map = zeros(height,length);
     env.objs = [];
     env.numObj = 0;
     
