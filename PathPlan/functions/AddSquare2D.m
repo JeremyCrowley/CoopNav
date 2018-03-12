@@ -6,7 +6,7 @@ function env = AddSquare2D(env,corner,sqrLength,sqrHeight)
     
     % make sure that the obstacle is within the environment map
     if(corner(2) < 1 || corner(1) < 1 || corner(2) > envHeight || corner(1) > envLength)
-        error('Error: initial corner (%d,%d) is not in the environment',corner(1),corner(2));
+        error('Error: corner (%d,%d) is not in the environment',corner(1),corner(2));
     end
     
     if(corner(2)+(sqrHeight-1) > envHeight && corner(1)+(sqrLength-1) > envLength)
@@ -19,7 +19,7 @@ function env = AddSquare2D(env,corner,sqrLength,sqrHeight)
     
     % get array index of top left corner of obstacle to iterate and add
     arrCornerIndex = CoordToArray([corner(1),corner(2)], env);
-    topLeftCornerIndex = [arrCornerIndex(1)-sqrHeight+1,arrCornerIndex(2)]
+    topLeftCornerIndex = [arrCornerIndex(1)-sqrHeight+1,arrCornerIndex(2)];
     
     % make sure each obstacle is unique (i.e. not overlapping)
     for i = 0:sqrHeight-1
@@ -39,7 +39,7 @@ function env = AddSquare2D(env,corner,sqrLength,sqrHeight)
             
             if(~IsCoordValid(curCoord,env))
                 
-                fprintf('position (%d,%d) not in map\n',curCoord(1),curCoord(2))
+                %fprintf('position (%d,%d) not in map\n',curCoord(1),curCoord(2))
                 continue
                 
             % check if obstacle:
@@ -47,7 +47,7 @@ function env = AddSquare2D(env,corner,sqrLength,sqrHeight)
             % - obstacles can be touching, not overlapping
             
             elseif(env.map(topLeftCornerIndex(1)+i,topLeftCornerIndex(2)+j) == 2) 
-                fprintf('position (%d,%d) already obstacle\n',curCoord(1)+i,curCoord(2)+j)
+                %fprintf('position (%d,%d) already obstacle\n',curCoord(1)+i,curCoord(2)+j)
                 continue
             else
                 env.map(topLeftCornerIndex(1)+i,topLeftCornerIndex(2)+j) = 1;
@@ -71,10 +71,10 @@ function env = AddSquare2D(env,corner,sqrLength,sqrHeight)
     else
         env.objs(:,:,end+1) = [v1;v2;v3;v4];
     end
-    
+    %}
     % increment obj count
     env.numObj = env.numObj+1; 
-    %}
+    
     
 
 end

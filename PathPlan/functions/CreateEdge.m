@@ -60,7 +60,7 @@ function G = CreateEdge(G, node1Val, node1Pos, node2Val, node2Pos, length)
         
         error('Invalid node type pair %d and %d between nodes (%d,%d) and (%d,%d)', node1Val, node2Val,node1Pos(1),node1Pos(2),node2Pos(1),node2Pos(2));
         
-    end   
+    end
 
     node1 = PositionToVal(node1Pos,length);
     node2 = PositionToVal(node2Pos,length);

@@ -53,7 +53,18 @@ function p = PlotGraph(graphEdges,env)
     
     for i = 1:length
         for j = 1:height
-            scatter(i,j,100,[0 0 0],'filled');
+            %scatter(i,j,100,[0 0 0],'filled');
+            
+            arrIndex = CoordToArray([i,j],env);
+            if(env.map(arrIndex(1),arrIndex(2)) == 2)
+                color = 'red';
+            elseif(env.map(arrIndex(1),arrIndex(2)) == 1)
+                color = 'blue';
+            else
+                color = 'green';
+            end
+            
+            PlotObstacleSquare([i,j],color);
         end
     end
         

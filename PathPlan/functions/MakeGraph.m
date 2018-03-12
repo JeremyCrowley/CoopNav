@@ -1,8 +1,12 @@
+% G = MakeGraph(env)
+%
+% creates a connect 2d graph from all the nodes in the env
 
-function G = MakeGraph(envMap)
+
+function G = MakeGraph(env)
 
     % get size of env map
-    [envHeight, envLength] = size(envMap);
+    [envHeight, envLength] = size(env.map);
     
     % initialize graph
     G = graph;
@@ -15,86 +19,90 @@ function G = MakeGraph(envMap)
     
     for i = 1:envLength*envHeight
         
-        
+        % get coordinate of node
         coordinate = ValToPosition(i,envLength);
-        
-        
-        
         col = coordinate(1);
         row = coordinate(2);
-        %row = floor((i-1)/(colNum))+1;
-        %col = i - (row-1)*colNum;
         
-        % name the node with (row, col)
-        name(i) = cellstr(sprintf('(%d,%d)',row,col));
+        % get array index of node
+        arrIndex = CoordToArray(coordinate, env);
+        iA = arrIndex(1);
+        jA = arrIndex(2);
         
-        nodeType(i) = envMap(row,col);
+        % name the node with (col, row)
+        name(i) = cellstr(sprintf('(%d,%d)',col,row)); 
+        nodeType(i) = env.map(iA,jA);
        
-        % top left node
-        % create edges: right, down-right, down
+        
+       
+        % bottom left node
+        % create edges: up, up-right, right
         if(i == 1)
             
-            G = CreateEdge(G,envMap(row,col),[row,col],envMap(row,col+1),[row,col+1],envLength);
-            G = CreateEdge(G,envMap(row,col),[row,col],envMap(row+1,col+1),[row+1,col+1],envLength);
-            G = CreateEdge(G,envMap(row,col),[row,col],envMap(row+1,col),[row+1,col],envLength);
+            G = CreateEdge(G,env.map(iA,jA),[col,row],env.map(iA-1,jA),[col,row+1],envLength);
+            G = CreateEdge(G,env.map(iA,jA),[col,row],env.map(iA-1,jA+1),[col+1,row+1],envLength);
+            G = CreateEdge(G,env.map(iA,jA),[col,row],env.map(iA,jA+1),[col+1,row],envLength);
+            
+            
         
-        % top right node
-        % create edges: down-left, down
+        % bottom right node
+        % create edges: up-left, up
         elseif(i == envLength)
             
-            G = CreateEdge(G,envMap(row,col),[row,col],envMap(row+1,col-1),[row+1,col-1],envLength);
-            G = CreateEdge(G,envMap(row,col),[row,col],envMap(row+1,col),[row+1,col],envLength);
+            G = CreateEdge(G,env.map(iA,jA),[col,row],env.map(iA-1,jA-1),[col-1,row+1],envLength);
+            G = CreateEdge(G,env.map(iA,jA),[col,row],env.map(iA-1,jA),[col,row+1],envLength);
 
             
-        % bottom right node
+        % top right node
         % create edges: none
         elseif(i == envLength*envHeight)
             continue 
             
-       % bottom left node
+       % top left node
        % create edges: right
         elseif(i == (envLength*envHeight)-envLength+1)
             
-            G = CreateEdge(G,envMap(row,col),[row,col],envMap(row,col+1),[row,col+1],envLength);
+            G = CreateEdge(G,env.map(iA,jA),[col,row],env.map(iA,jA+1),[col+1,row],envLength);
         
         % right middle node
-        % create edges: down-left, down
+        % create edges: up-left, up
         elseif(mod(i,envLength) == 0)
             
-            G = CreateEdge(G,envMap(row,col),[row,col],envMap(row+1,col-1),[row+1,col-1],envLength);
-            G = CreateEdge(G,envMap(row,col),[row,col],envMap(row+1,col),[row+1,col],envLength);
+            G = CreateEdge(G,env.map(iA,jA),[col,row],env.map(iA-1,jA-1),[col-1,row+1],envLength);
+            G = CreateEdge(G,env.map(iA,jA),[col,row],env.map(iA-1,jA),[col,row+1],envLength);
             
         % left middle node
-        % create edges: right, down-right, down
+        % create edges: up, up-right, right
         elseif(mod(i-1,envLength) == 0)
             
-            G = CreateEdge(G,envMap(row,col),[row,col],envMap(row,col+1),[row,col+1],envLength);
-            G = CreateEdge(G,envMap(row,col),[row,col],envMap(row+1,col+1),[row+1,col+1],envLength);
-            G = CreateEdge(G,envMap(row,col),[row,col],envMap(row+1,col),[row+1,col],envLength);
+            G = CreateEdge(G,env.map(iA,jA),[col,row],env.map(iA-1,jA),[col,row+1],envLength);
+            G = CreateEdge(G,env.map(iA,jA),[col,row],env.map(iA-1,jA+1),[col+1,row+1],envLength);
+            G = CreateEdge(G,env.map(iA,jA),[col,row],env.map(iA,jA+1),[col+1,row],envLength);
             
             
-        % bottom middle node
+        % top middle node
         % create edges: right
-        elseif(i > (envLength*envHeight)-envLength+1)
+        elseif(i > ((envLength*envHeight)-envLength))
             
-            G = CreateEdge(G,envMap(row,col),[row,col],envMap(row,col+1),[row,col+1],envLength);
+            G = CreateEdge(G,env.map(iA,jA),[col,row],env.map(iA,jA+1),[col+1,row],envLength);
         
-        % top middle and middle nodes
-        % create edges: right, down-right, down, down-left
+        % bottom middle and middle nodes
+        % create edges: up-left, up, up-right, right
         else
             
-            G = CreateEdge(G,envMap(row,col),[row,col],envMap(row,col+1),[row,col+1],envLength);
-            G = CreateEdge(G,envMap(row,col),[row,col],envMap(row+1,col+1),[row+1,col+1],envLength);
-            G = CreateEdge(G,envMap(row,col),[row,col],envMap(row+1,col),[row+1,col],envLength);
-            G = CreateEdge(G,envMap(row,col),[row,col],envMap(row+1,col-1),[row+1,col-1],envLength); 
+            G = CreateEdge(G,env.map(iA,jA),[col,row],env.map(iA-1,jA-1),[col-1,row+1],envLength);
+            G = CreateEdge(G,env.map(iA,jA),[col,row],env.map(iA-1,jA),[col,row+1],envLength);
+            G = CreateEdge(G,env.map(iA,jA),[col,row],env.map(iA-1,jA+1),[col+1,row+1],envLength);
+            G = CreateEdge(G,env.map(iA,jA),[col,row],env.map(iA,jA+1),[col+1,row],envLength);
 
         end
         
     end
-    name
+    
+    % store names and sizes
     G.Nodes.Name = transpose(name);
     G.Nodes.Size = transpose(nodeType);
     
-    %G.Nodes;
+    
 
 end
