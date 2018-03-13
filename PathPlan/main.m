@@ -137,13 +137,14 @@ figure()
 PlotGraph(G.Edges, E1);
 
 radiusOfView = 1;
-startPos = [1, 1];
+startPos = [3, 3];
 startNode = PositionToVal(startPos,E1);
 
 A1 = CreateAgent(radiusOfView,startNode);
 E1 = UpdateEnv(E1,A1);
 
-PointsOfInterest(E1);
+
+mapCircle = GetMapEdge(E1);
 
 figure()
 PlotEnv(E1, length, height);
