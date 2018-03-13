@@ -2,6 +2,7 @@
 close all;clc;clear;
 
 %% Test adding objects to the environment
+%{
 
 % % % % % % % % % % % % % % % % % % % % % % % % 
 % create a 6x5 environment with 4 obstacles   %
@@ -36,9 +37,9 @@ disp(E1.map)
 %      2     2     2     1     2              %
 % % % % % % % % % % % % % % % % % % % % % % % % 
 
-
+%}
 %% Test add obstacle error messages
-
+%{
 % TEST 1
 % E1 = AddSquare2D(E1,[7,7],2,2);
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
@@ -88,62 +89,86 @@ disp(E1.map)
 % Error: overlapping obstacles at (1,6)                         %
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
-
+%}
 %% Test making a graph that corresponds with map
-
+%{
 % % % % % % % % % % % % % % % % % % % % % % % % 
-% create a 4x3 environment with 2 obstacles   %
+% create a 20x20 environment with 9 obstacles %
 % % % % % % % % % % % % % % % % % % % % % % % % 
 
-length = 3;
-height = 4;
+length = 20;
+height = 20;
 E1 = CreateEnv2D(height,length);
 
 % AddSquare2D(env, corner, length, height)
 E1 = AddSquare2D(E1,[1,1],2,1);
-E1 = AddSquare2D(E1,[1,2],1,2);
+E1 = AddSquare2D(E1,[10,1],2,5);
+E1 = AddSquare2D(E1,[5,5],5,2);
+E1 = AddSquare2D(E1,[8,11],2,2);
+E1 = AddSquare2D(E1,[11,6],2,6);
+E1 = AddSquare2D(E1,[9,15],5,2);
+E1 = AddSquare2D(E1,[3,10],2,8);
+E1 = AddSquare2D(E1,[15,3],3,4);
+E1 = AddSquare2D(E1,[17,13],2,6);
+
 
 G = MakeGraph(E1);
+figure(1)
 PlotGraph(G.Edges, E1);
 
-
+%}
 %% test creating and navigating with agent
-%{
+
+% % % % % % % % % % % % % % % % % % % % % % % % 
+% create a 8x8 environment with 4 obstacles   %
+% % % % % % % % % % % % % % % % % % % % % % % % 
+
+length = 7;
+height = 7;
+E1 = CreateEnv2D(height,length);
+
+% AddSquare2D(env, corner, length, height)
+E1 = AddSquare2D(E1,[2,5],2,1);
+E1 = AddSquare2D(E1,[6,6],1,1);
+E1 = AddSquare2D(E1,[6,2],2,2);
+
+G = MakeGraph(E1);
+figure()
+PlotGraph(G.Edges, E1);
+
 radiusOfView = 1;
-startPos = [16, 15]
-startNode = PositionToVal(startPos,length);
+startPos = [1, 1];
+startNode = PositionToVal(startPos,E1);
 
 A1 = CreateAgent(radiusOfView,startNode);
 E1 = UpdateEnv(E1,A1);
 
-for i = 1:10
-    A1.currentNode = PositionToVal([startPos(1)+i,startPos(2)],length);
-    E1 = UpdateEnv(E1,A1);
-end
+PointsOfInterest(E1);
 
-
-
+figure()
 PlotEnv(E1, length, height);
+
+
 
 %}
 
 
+%% Visualization and djikstra
 %{
 % for visualization
-flipud(E1.map)
-
-G = MakeGraph(E1.map);
-
+figure(2)
 % create larger lines for lower cost 
+
 LWidths = 10*(1./G.Edges.Weight);
 p = plot(G,'LineWidth',LWidths);
 
 % create larger lines for lower cost 
-%[path1,d] = shortestpath(G,1,600);
-%highlight(p,path1,'EdgeColor','g');
-
-PlotGraph(G.Edges);
+[path1,d] = shortestpath(G,3,20);
+highlight(p,path1,'EdgeColor','g');
 %}
+
+
+
 
 
 

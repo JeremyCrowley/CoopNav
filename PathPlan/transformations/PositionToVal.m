@@ -4,8 +4,10 @@
 
 % TO DO - add height and valid check
 
-function value = PositionToVal(coordinate, length)
+function value = PositionToVal(coordinate, env)
 
-    value = (coordinate(2)-1)*length+coordinate(1);
+    [envHeight, envLength] = size(env.map);
+
+    value = (coordinate(2)-1)*envLength+coordinate(1);
 
 end

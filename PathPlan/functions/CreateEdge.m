@@ -9,7 +9,9 @@
 %
 
 
-function G = CreateEdge(G, node1Val, node1Pos, node2Val, node2Pos, length)
+function G = CreateEdge(G, node1Val, node1Pos, node2Val, node2Pos, env)
+
+    %[envHeight, envLength] = size(env.map);
 
     
     % determine if the nodes are diagnal or straight
@@ -18,54 +20,55 @@ function G = CreateEdge(G, node1Val, node1Pos, node2Val, node2Pos, length)
         diag = 1;
     end
     
-    % both nodes are free space
-    if(node1Val == 0 && node2Val == 0)
-        
+    % to free space
+    if(node2Val == 0)
         if(diag)
-            weight = sqrt(2);
+            weight_12 = sqrt(2);
         else
-            weight = 1;
+            weight_12 = 1;
         end
-       
-    % one node is free space and the other is obstacle boundary
-    elseif(node1Val == 1 && node2Val == 0 || node1Val == 0 && node2Val == 1)
-        
+    % to obstacle boundary
+    elseif(node2Val == 1)
         if(diag)
-            weight = sqrt(8);
+            weight_12 = sqrt(8);
         else
-            weight = 2;
+            weight_12 = 2;
         end
-        
-	% both nodes are obstacle boundaries
-	elseif(node1Val == 1 && node2Val == 1)
-        
-        if(diag)
-            weight = sqrt(32);
-        else
-            weight = 4;
-        end
-        
-	% one node is obstacle boundary and the other is obstacle
-    elseif(node1Val == 2 && node2Val == 1 || node1Val == 1 && node2Val == 2)        
-        
-        weight = 1000;
-    
-    
-    elseif(node1Val == 2 && node2Val == 2)
-        
-        weight = 2000;
-        
+	% to obstacle
+    elseif(node2Val == 2)        
+        weight_12 = 1000;
 	% incorrect relation between two nodes
     else
-        
-        error('Invalid node type pair %d and %d between nodes (%d,%d) and (%d,%d)', node1Val, node2Val,node1Pos(1),node1Pos(2),node2Pos(1),node2Pos(2));
-        
+        error('Error: Invalid node2 value %d\n',node2Val);
+    end
+    
+    % to free space
+    if(node1Val == 0)
+        if(diag)
+            weight_21 = sqrt(2);
+        else
+            weight_21 = 1;
+        end
+    % to obstacle boundary
+    elseif(node1Val == 1)
+        if(diag)
+            weight_21 = sqrt(8);
+        else
+            weight_21 = 2;
+        end
+	% to obstacle
+    elseif(node1Val == 2)        
+        weight_21 = 1000;
+	% incorrect relation between two nodes
+    else
+        error('Error: Invalid node1 value %d\n',node1Val);
     end
 
-    node1 = PositionToVal(node1Pos,length);
-    node2 = PositionToVal(node2Pos,length);
+    node1 = PositionToVal(node1Pos,env);
+    node2 = PositionToVal(node2Pos,env);
     
-    fprintf('edge between %d and %d\n',node1,node2);
-    G = addedge(G,node1,node2,weight);
+    %fprintf('edges between %d and %d\n',node1,node2);
+    G = addedge(G,node1,node2,weight_12);
+    G = addedge(G,node2,node1,weight_21);
 
 end

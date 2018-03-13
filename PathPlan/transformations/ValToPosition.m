@@ -2,13 +2,15 @@
 %
 % tranforms node number to the node coordinates
 
-function coordinate = ValToPosition(value, length)
+function coordinate = ValToPosition(value, env)
 
-    coordinate(1) = value - floor(value/length)*length;
-    coordinate(2) = ceil(value/length);
+    [envHeight, envLength] = size(env.map);
+
+    coordinate(1) = value - floor(value/envLength)*envLength;
+    coordinate(2) = ceil(value/envLength);
     
     if(coordinate(1) == 0)
-        coordinate(1) = length;
+        coordinate(1) = envLength;
     end
 
 end

@@ -8,9 +8,9 @@ function p = PlotGraph(graphEdges,env)
 
     [height,length] = size(graphEdges);
     
-    figure()
     hold on
     grid on
+    
     for i = 1:height
         
         % parse end nodes
@@ -30,22 +30,24 @@ function p = PlotGraph(graphEdges,env)
         x2 = str2num(endNode2(2:comma2));
         y2 = str2num(endNode2(comma2+1:par2-1));
         
-        coord1 = [x1, y1];
-        coord2 = [x2, y2];
         
-        if(table2array(graphEdges(i,2)) == 2000)
+        
+        % vector to display direction of motion into a region
+        tail = [(x2-x1)/2+x1, (y2-y1)/2+y1];
+        vector = [0.95*(tail(1)-x1), 0.95*(tail(2)-y1)];
+
+        
+        if(table2array(graphEdges(i,2)) == 1000)
             color = [1 0 0];
-        elseif(table2array(graphEdges(i,2)) == 1000)
-            color = [0 0.3 1];
-        elseif(table2array(graphEdges(i,2)) == 4 || table2array(graphEdges(i,2)) == sqrt(32))
-            color = [0 0.45 1];
         elseif(table2array(graphEdges(i,2)) == 2 || table2array(graphEdges(i,2)) == sqrt(8))
-            color = [0 0.7 1];
+            color = [0 0 1];
         else
-            color = [0 0 0];
+            color = [0 1 0];
         end
         
-        p = plot([coord1(1),coord2(1)],[coord1(2),coord2(2)],'color',color);
+        %p = plot([coord1(1),coord2(1)],[coord1(2),coord2(2)],'color',color);
+        quiver(tail(1),tail(2),vector(1),vector(2),0,'color',color);
+
 
     end
     
@@ -64,7 +66,7 @@ function p = PlotGraph(graphEdges,env)
                 color = 'green';
             end
             
-            PlotObstacleSquare([i,j],color);
+            PlotObstacleSquare([i,j],color,0.15);
         end
     end
         
