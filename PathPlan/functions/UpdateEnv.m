@@ -31,6 +31,7 @@ function env = UpdateEnv(env, agent)
             if(env.node(arrIndex(1),arrIndex(2)).discovered == 1)
                 if(CheckIfEdge(env, [i,j]))
                     env.node(arrIndex(1),arrIndex(2)).edge = 1;
+                    env.numEdgeNodes = env.numEdgeNodes + 1;
                     %fprintf('found edge at (%d, %d)\n',i,j);
                 else
                     env.node(arrIndex(1),arrIndex(2)).edge = 0;

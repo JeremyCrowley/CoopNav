@@ -7,6 +7,7 @@ function env = CreateEnv2D(height,length)
     env.map = zeros(height,length);
     env.objs = [];
     env.numObj = 0;
+    env.numEdgeNodes = 0;
     
     for i = 1:length
         for j = 1:height

@@ -13,8 +13,13 @@ function p = PlotEnv(env, length, height)
             end
             
             coordinate = ArrayToCoord([i,j], env);
+            val = PositionToVal(coordinate, env);
             
             scatter(coordinate(1),coordinate(2),10,color);
+            
+            annot = sprintf('%d',val);
+            text(coordinate(1),coordinate(2),annot)
+
 
             hold on
         end

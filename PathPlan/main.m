@@ -144,7 +144,9 @@ A1 = CreateAgent(radiusOfView,startNode);
 E1 = UpdateEnv(E1,A1);
 
 
-mapCircle = GetMapEdge(E1);
+circularEdgeLinkedList = GetMapEdge(E1);
+
+FindPointsOfInterest(circularEdgeLinkedList, E1)
 
 figure()
 PlotEnv(E1, length, height);
