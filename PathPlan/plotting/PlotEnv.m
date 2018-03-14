@@ -1,9 +1,12 @@
 % p = PlotEnv(env, length, height)
 
+% PROBLEMS WITH THIS FUNCTION
+
 function p = PlotEnv(env, length, height)
 
     for i = 1:length
         for j = 1:height
+            
             if(env.node(i,j).discovered == 0)
                 color = [0 0 0];
             elseif(env.node(i,j).edge == 1)

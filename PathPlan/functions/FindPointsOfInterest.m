@@ -111,10 +111,23 @@ function POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, 
     
     % started and ended with free space
     if(freeSpaceCounter > 0 && firstPass.freeSpaceCounter > 0)
-    
-        freeSpaceLength = freeSpaceCounter + firstPass.freeSpaceCounter;
         
-        fprintf('make looped freespace POI\n');
+        % if still on first pass do not double count the free space length
+        if(firstPass.true)
+            freeSpaceLength = freeSpaceCounter;
+        else
+            freeSpaceLength = freeSpaceCounter + firstPass.freeSpaceCounter
+        end
+        
+        % go back and make POIs
+        for j = 1:freeSpaceLength
+            if(mod(j,ceil(freeSpaceThreshold/2)) == 0)
+                POIcount = POIcount + 1;
+                
+                circIndex = mod(circLength-freeSpaceCounter+j,circLength)+1;
+                POI(POIcount) = circularEdgeLinkedList.node(circIndex).nodeNum;
+            end
+        end
        
     % started with free space and ended with obstacle boundary
     elseif(obstacleBoundaryCounter > 0 && firstPass.freeSpaceCounter > 0)

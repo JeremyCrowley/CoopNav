@@ -11,8 +11,11 @@ function env = CreateEnv2D(height,length)
     
     for i = 1:length
         for j = 1:height
-            env.node(i,j).discovered = 0;
-            env.node(i,j).edge = 0;
+            
+            arrIndex = CoordToArray([i,j],env);
+            
+            env.node(arrIndex(1),arrIndex(2)).discovered = 0;
+            env.node(arrIndex(1),arrIndex(2)).edge = 0;
         end
     end  
     

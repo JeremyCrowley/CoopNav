@@ -34,7 +34,7 @@ function p = PlotGraph(graphEdges,env)
         
         % vector to display direction of motion into a region
         tail = [(x2-x1)/2+x1, (y2-y1)/2+y1];
-        vector = [0.95*(tail(1)-x1), 0.95*(tail(2)-y1)];
+        vector = [0.9*(tail(1)-x1), 0.9*(tail(2)-y1)];
 
         
         if(table2array(graphEdges(i,2)) == 1000)
@@ -46,7 +46,9 @@ function p = PlotGraph(graphEdges,env)
         end
         
         %p = plot([coord1(1),coord2(1)],[coord1(2),coord2(2)],'color',color);
-        quiver(tail(1),tail(2),vector(1),vector(2),0,'color',color);
+        
+        % to show cost of path
+        %quiver(tail(1),tail(2),vector(1),vector(2),0,'color',color);
 
 
     end
@@ -65,10 +67,30 @@ function p = PlotGraph(graphEdges,env)
             else
                 color = 'green';
             end
-            
             PlotObstacleSquare([i,j],color,0.15);
+            
+            
+            
+            if(env.node(arrIndex(1),arrIndex(2)).discovered == 0)
+                color = [0 0 0];
+            elseif(env.node(arrIndex(1),arrIndex(2)).edge == 1)
+                color = [0 1 0];
+            else
+                color = [1 0 0];
+            end
+            
+            
+            val = PositionToVal([i,j], env);
+            
+            scatter(i,j,10,color);
+            
+            annot = sprintf('%d',val);
+            text(i,j,annot)
+            
         end
     end
+    
+    
         
     
     xlim([0 length+1]);
