@@ -1,6 +1,6 @@
 % POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, env)
 
-function POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, env)
+function POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, env, targetNode)
     
     [circHeight, circLength] = size(circularEdgeLinkedList.node);
     
@@ -149,5 +149,16 @@ function POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, 
         %fprintf('Note: ending sequence does not warrant more POIs');
         0;
     end
+    
+    
+    %  add target to POI if it has been discovered
+    targetCoord = ValToPosition(targetNode,env);
+    targetArrIndex = CoordToArray(targetCoord,env);
+    
+    if(env.node(targetArrIndex(1),targetArrIndex(2)).discovered == 1)
+        POIcount = POIcount + 1;
+        POI(POIcount) = targetNode;  
+    end
+    
 
 end

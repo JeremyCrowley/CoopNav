@@ -6,8 +6,8 @@ clear;clc;close all;
 % create a 8x8 environment with 4 obstacles   %
 % % % % % % % % % % % % % % % % % % % % % % % % 
 
-m = 8;
-n = 9;
+m = 14;
+n = 14;
 
 E1 = CreateEnv2D(m,n);
 
@@ -15,27 +15,34 @@ E1 = CreateEnv2D(m,n);
 
 E1 = AddSquare2D(E1,[3,4],4,1);
 E1 = AddSquare2D(E1,[7,3],1,3);
+E1 = AddSquare2D(E1,[3,8],5,1);
+E1 = AddSquare2D(E1,[12,3],2,7);
+
 
 
 % make and plot graph
 G = MakeGraph(E1);
-figure()
-PlotGraph(G.Edges, E1);
 
 % set sim parameters
 radiusOfView = 3;
 startPos = [1, 1];
-target = [6,5];
-targetNode = PositionToVal(target,E1);
+targetCoord = [14,14];
+targetNode = PositionToVal(targetCoord,E1);
 startNode = PositionToVal(startPos,E1);
 
 % create agent and update environment
 A1 = CreateAgent(radiusOfView,startNode);
 
+% set initial handles
+pDiscovered = plot(0,0);
+pPOI = plot(0,0);
+pAgent = plot(0,0);
+pCell = plot(0,0);
 
 
 
-for i = 1:20
+iterations = 10
+for i = 1:iterations
     agentCoord = ValToPosition(A1.currentNode, E1);
     fprintf('Agent at (%d, %d)\n',agentCoord(1),agentCoord(2));
     
@@ -45,7 +52,7 @@ for i = 1:20
 
     % find points of interest
     freeSpaceThreshold = 4;
-    POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, E1);
+    POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, E1, targetNode);
     
     fprintf('Points of Interest: \n');
     disp(POI);
@@ -70,6 +77,12 @@ for i = 1:20
         nextNode = path(2);
     end
     A1.currentNode = nextNode;
+    
+    figure(1)
+    
+    [pCell,pDiscovered,pPOI,pAgent] = PlotGraph(G.Edges,circularEdgeLinkedList,POI, E1, A1,pCell,pDiscovered,pPOI,pAgent);
+    drawnow;
+    
 end
 
 
