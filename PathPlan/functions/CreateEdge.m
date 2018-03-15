@@ -30,9 +30,9 @@ function G = CreateEdge(G, node1Val, node1Pos, node2Val, node2Pos, env)
     % to obstacle boundary
     elseif(node2Val == 1)
         if(diag)
-            weight_12 = sqrt(8);
+            weight_12 = sqrt(32);
         else
-            weight_12 = 2;
+            weight_12 = 4;
         end
 	% to obstacle
     elseif(node2Val == 2)        
@@ -52,9 +52,9 @@ function G = CreateEdge(G, node1Val, node1Pos, node2Val, node2Pos, env)
     % to obstacle boundary
     elseif(node1Val == 1)
         if(diag)
-            weight_21 = sqrt(8);
+            weight_21 = sqrt(32);
         else
-            weight_21 = 2;
+            weight_21 = 4;
         end
 	% to obstacle
     elseif(node1Val == 2)        

@@ -25,7 +25,9 @@ function env = AddSquare2D(env,corner,sqrLength,sqrHeight)
     for i = 0:sqrHeight-1
         for j = 0:sqrLength-1
             if(env.map(topLeftCornerIndex(1)+i,topLeftCornerIndex(2)+j) == 2)
-                error('Error: overlapping obstacles at (%d,%d)',corner(1)+i,corner(2)+j);
+                
+                c = ArrayToCoord([topLeftCornerIndex(1)+i,topLeftCornerIndex(2)+j],env);
+                error('Error: overlapping obstacles at (%d,%d)',c(1),c(2));
             end
         end
     end

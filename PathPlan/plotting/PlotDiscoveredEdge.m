@@ -1,6 +1,6 @@
 % p = PlotDiscoveredEdge(circularEdgeLinkedList)
 
-function p = PlotDiscoveredEdge(circularEdgeLinkedList)
+function p = PlotDiscoveredEdge(circularEdgeLinkedList,env)
 
 % show edge of discovered map
     [circHeight, circLength] = size(circularEdgeLinkedList.node);

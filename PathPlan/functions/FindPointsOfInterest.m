@@ -20,6 +20,8 @@ function POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, 
     freeSpaceFlag = 0;
     
     for i = 1:circLength
+        
+        
 
         % get coordinates and array index for current edge node
         coordinate = ValToPosition(circularEdgeLinkedList.node(i).nodeNum, env);
@@ -49,13 +51,15 @@ function POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, 
             if(freeSpaceCounter  ~= 0)
 
                 % add POI to list
-                POIcount = POIcount + 1;
-                POI(POIcount) = circularEdgeLinkedList.node(i).nodeNum;
+                
+                if(~IsNodeEdgeEnv(circularEdgeLinkedList.node(i).nodeNum,env))
+                    POIcount = POIcount + 1;
+                    POI(POIcount) = circularEdgeLinkedList.node(i).nodeNum;
+                end
                 
                 % POI - long enough free space without being first pass
                 if(~firstPass.true && freeSpaceFlag)
-                    
-
+                   
                     % go back and make POIs
                     for j = 1:freeSpaceCounter
                         if(mod(j,ceil(freeSpaceThreshold/2)) == 0)
@@ -64,10 +68,14 @@ function POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, 
                         end
                     end
                     
-                    % reset flag
-                    freeSpaceFlag = 0;
+                    
                 end
                 
+                % reset flag
+                freeSpaceFlag = 0;
+                
+                % reset first pass flags
+                firstPass.true = 0;
                 % reset counter
                 freeSpaceCounter = 0;
 
@@ -81,7 +89,14 @@ function POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, 
         % free space
         elseif(env.map(arrIndex(1),arrIndex(2)) == 0)
             
+            
+            %if(IsNodeEdgeEnv(circularEdgeLinkedList.node(i).nodeNum,env))
+            %    freeSpaceCounter = 1;
+            %else
+            %    freeSpaceCounter = freeSpaceCounter + 1;
+            %end
             freeSpaceCounter = freeSpaceCounter + 1;
+           
             
             % set free space counter if above threshold of free space nodes
             if(freeSpaceCounter > freeSpaceThreshold)
@@ -92,8 +107,12 @@ function POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, 
             if(obstacleBoundaryCounter  ~= 0)
                 firstPass.true = 0;
                 obstacleBoundaryCounter = 0;
-                POIcount = POIcount + 1;
-                POI(POIcount) = circularEdgeLinkedList.node(i).prevNode;
+                
+                if(~IsNodeEdgeEnv(circularEdgeLinkedList.node(i).prevNode,env))
+                    POIcount = POIcount + 1;
+                    POI(POIcount) = circularEdgeLinkedList.node(i).prevNode;
+                end
+                
             end
 
         % invalid node value
@@ -101,31 +120,38 @@ function POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, 
             error('Error: Invalid node value %d at (%d,%d)', circularEdgeLinkedList.node(i).nodeNum, coordinate(1), coordinate(2));
         end
         
+        
         % update first pass values
         if(firstPass.true)
             firstPass.freeSpaceCounter = freeSpaceCounter;
             firstPass.obstacleBoundaryCounter = obstacleBoundaryCounter;
             firstPass.obstacleCounter = obstacleCounter;
         end 
+        
     end
     
+    
+    %firstPass.freeSpaceCounter
     % started and ended with free space
     if(freeSpaceCounter > 0 && firstPass.freeSpaceCounter > 0)
-        
+
         % if still on first pass do not double count the free space length
         if(firstPass.true)
             freeSpaceLength = freeSpaceCounter;
         else
-            freeSpaceLength = freeSpaceCounter + firstPass.freeSpaceCounter
+            freeSpaceLength = freeSpaceCounter + firstPass.freeSpaceCounter;
         end
         
         % go back and make POIs
-        for j = 1:freeSpaceLength
+        for j = 1:freeSpaceLength-1
             if(mod(j,ceil(freeSpaceThreshold/2)) == 0)
-                POIcount = POIcount + 1;
+                
                 
                 circIndex = mod(circLength-freeSpaceCounter+j,circLength)+1;
-                POI(POIcount) = circularEdgeLinkedList.node(circIndex).nodeNum;
+                if(~IsNodeEdgeEnv(circularEdgeLinkedList.node(circIndex).nodeNum,env))
+                    POIcount = POIcount + 1;
+                    POI(POIcount) = circularEdgeLinkedList.node(circIndex).nodeNum;
+                end
             end
         end
        
@@ -134,6 +160,19 @@ function POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, 
         
         POIcount = POIcount + 1;
         POI(POIcount) = circularEdgeLinkedList.node(circLength).nodeNum;
+        
+        
+        % go back and make POIs
+        for j = 1:firstPass.freeSpaceCounter-1
+            if(mod(j,ceil(freeSpaceThreshold/2)) == 0)
+                
+                if(~IsNodeEdgeEnv(circularEdgeLinkedList.node(j).nodeNum,env))
+                    POIcount = POIcount + 1;
+                    POI(POIcount) = circularEdgeLinkedList.node(j).nodeNum;
+                end
+            end
+        end
+        
         
     % started with obstacle boundary and ended with free space
     elseif(freeSpaceCounter > 0 && firstPass.obstacleBoundaryCounter > 0)

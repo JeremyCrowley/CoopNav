@@ -1,31 +1,39 @@
 clear;clc;close all;
 
-%% test creating and finding points of interest
-
+%% Navigation with agent
 % % % % % % % % % % % % % % % % % % % % % % % % 
 % create a 8x8 environment with 4 obstacles   %
 % % % % % % % % % % % % % % % % % % % % % % % % 
 
-m = 14;
-n = 14;
+m = 20;
+n = 20;
 
 E1 = CreateEnv2D(m,n);
 
 % AddSquare2D(env, corner, length, height)
 
-E1 = AddSquare2D(E1,[3,4],4,1);
-E1 = AddSquare2D(E1,[7,3],1,3);
-E1 = AddSquare2D(E1,[3,8],5,1);
-E1 = AddSquare2D(E1,[12,3],2,7);
+E1 = AddSquare2D(E1,[3,9],5,1);
+E1 = AddSquare2D(E1,[3,4],5,1);
+E1 = AddSquare2D(E1,[8,1],3,4);
+E1 = AddSquare2D(E1,[8,5],1,8);
+E1 = AddSquare2D(E1,[12,1],2,7);
+E1 = AddSquare2D(E1,[12,11],1,4);
+E1 = AddSquare2D(E1,[12,15],6,2);
+E1 = AddSquare2D(E1,[17,10],1,5);
+E1 = AddSquare2D(E1,[18,5],1,6);
+E1 = AddSquare2D(E1,[18,14],1,7);
 
 
 
+figure(1)
+PlotCellDecomp(E1);
+%pause(20)
 % make and plot graph
 G = MakeGraph(E1);
 
 % set sim parameters
-radiusOfView = 3;
-startPos = [1, 1];
+radiusOfView = 2;
+startPos = [8, 14];
 targetCoord = [14,14];
 targetNode = PositionToVal(targetCoord,E1);
 startNode = PositionToVal(startPos,E1);
@@ -39,10 +47,16 @@ pPOI = plot(0,0);
 pAgent = plot(0,0);
 pCell = plot(0,0);
 
+figure(2)
+
+iterations = 3;
 
 
-iterations = 10
+agentPath = zeros(1,iterations);
 for i = 1:iterations
+    
+    agentPath(i) = A1.currentNode;
+    
     agentCoord = ValToPosition(A1.currentNode, E1);
     fprintf('Agent at (%d, %d)\n',agentCoord(1),agentCoord(2));
     
@@ -51,11 +65,10 @@ for i = 1:iterations
     circularEdgeLinkedList = GetMapEdge(E1);
 
     % find points of interest
-    freeSpaceThreshold = 4;
+    freeSpaceThreshold = 8;
     POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, E1, targetNode);
     
-    fprintf('Points of Interest: \n');
-    disp(POI);
+    
     
     numPOI = length(POI);
 
@@ -68,22 +81,45 @@ for i = 1:iterations
         costList(j) = PathCost(path,targetNode,E1);
     end
     
+    fprintf('Points of Interest: \n');
+    disp(POI);
+    disp(costList)
     [costMin, index] = min(costList);
     [path,d] = shortestpath(G,A1.currentNode,POI(index));
 
+    
+    [pCell,pDiscovered,pPOI,pAgent] = PlotGraph(G.Edges,circularEdgeLinkedList,POI, E1, A1,pCell,pDiscovered,pPOI,pAgent);
+    drawnow;
+    
+    
+    
+    % choose next node
+    
     if(length(path) == 1)
         nextNode = path(1);
     else
         nextNode = path(2);
     end
+    
+    % trace agents trajectory
+    c1 = ValToPosition(A1.currentNode,E1);
+    c2 = ValToPosition(nextNode,E1);
+    plot([c1(1),c2(1)],[c1(2),c2(2)],'green');
+    
+    
+    % set next node
     A1.currentNode = nextNode;
     
-    figure(1)
+    %PlotAgentPath(agentPath, E1);
     
-    [pCell,pDiscovered,pPOI,pAgent] = PlotGraph(G.Edges,circularEdgeLinkedList,POI, E1, A1,pCell,pDiscovered,pPOI,pAgent);
-    drawnow;
+    %pause(2)
     
 end
+
+delete(pAgent);
+pAgent = scatter(c2(1),c2(2),50,[0 1 0],'*');
+
+
 
 
 
@@ -97,7 +133,7 @@ end
 % nodes
 
 
+%% Note
 
-
-
-
+% Oscillatory behavior noticed when POI weights are equal and grow equally
+% when traveling towards it.

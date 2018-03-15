@@ -4,6 +4,7 @@ function p = PlotCellDecomp(env)
 
     % show cell decomposition - obstacle, obstacle boundary, free space
     [envHeight,envLength] = size(env.map);
+   
     
     for i = 1:envLength
         for j = 1:envHeight
@@ -32,11 +33,10 @@ function p = PlotCellDecomp(env)
             
             
             val = PositionToVal([i,j], env);
+
             
-            %scatter(i,j,10,color);
-            
-            %annot = sprintf('%d',val);
-            %text(i,j,annot)
+            annot = sprintf('%d',val);
+            p(k+envHeight*envLength) = text(i-0.2,j-0.2,annot);
             
         end
     end
