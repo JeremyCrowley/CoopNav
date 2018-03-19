@@ -22,7 +22,7 @@ function [pCell, pDiscovered, pPOI, pAgent] = PlotGraph(graphEdges,circularEdgeL
 
     
     %PlotDiscoveredEdge(circularEdgeLinkedList)
-    pDiscovered = PlotDiscovered(env,0);
+    pDiscovered = PlotDiscovered(env);
     
     pPOI = PlotPOI(POI,env);
     %set(pPOI,'Visible','off')

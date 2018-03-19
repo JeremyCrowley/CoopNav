@@ -5,8 +5,8 @@ clear;clc;close all;
 % create a 8x8 environment with 4 obstacles   %
 % % % % % % % % % % % % % % % % % % % % % % % % 
 
-m = 20;
-n = 20;
+m = 14;
+n = 14;
 
 E1 = CreateEnv2D(m,n);
 
@@ -18,22 +18,24 @@ E1 = AddSquare2D(E1,[8,1],3,4);
 E1 = AddSquare2D(E1,[8,5],1,8);
 E1 = AddSquare2D(E1,[12,1],2,7);
 E1 = AddSquare2D(E1,[12,11],1,4);
-E1 = AddSquare2D(E1,[12,15],6,2);
-E1 = AddSquare2D(E1,[17,10],1,5);
-E1 = AddSquare2D(E1,[18,5],1,6);
-E1 = AddSquare2D(E1,[18,14],1,7);
+%E1 = AddSquare2D(E1,[12,15],6,2);
+%E1 = AddSquare2D(E1,[17,10],1,5);
+%E1 = AddSquare2D(E1,[18,5],1,6);
+%E1 = AddSquare2D(E1,[18,14],1,7);
 
 
 
 figure(1)
 PlotCellDecomp(E1);
+
+
 %pause(20)
 % make and plot graph
 G = MakeGraph(E1);
 
 % set sim parameters
-radiusOfView = 2;
-startPos = [8, 14];
+radiusOfView = 3;
+startPos = [1, 1];
 targetCoord = [14,14];
 targetNode = PositionToVal(targetCoord,E1);
 startNode = PositionToVal(startPos,E1);
@@ -49,8 +51,9 @@ pCell = plot(0,0);
 
 figure(2)
 
-iterations = 3;
+iterations = 45;
 
+pause(10)
 
 agentPath = zeros(1,iterations);
 for i = 1:iterations
@@ -90,8 +93,6 @@ for i = 1:iterations
     
     [pCell,pDiscovered,pPOI,pAgent] = PlotGraph(G.Edges,circularEdgeLinkedList,POI, E1, A1,pCell,pDiscovered,pPOI,pAgent);
     drawnow;
-    
-    
     
     % choose next node
     

@@ -35,8 +35,8 @@ function p = PlotCellDecomp(env)
             val = PositionToVal([i,j], env);
 
             
-            annot = sprintf('%d',val);
-            p(k+envHeight*envLength) = text(i-0.2,j-0.2,annot);
+            %annot = sprintf('%d',val);
+            %p(k+envHeight*envLength) = text(i-0.2,j-0.2,annot);
             
         end
     end

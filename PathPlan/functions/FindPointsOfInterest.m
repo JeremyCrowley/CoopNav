@@ -90,11 +90,6 @@ function POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, 
         elseif(env.map(arrIndex(1),arrIndex(2)) == 0)
             
             
-            %if(IsNodeEdgeEnv(circularEdgeLinkedList.node(i).nodeNum,env))
-            %    freeSpaceCounter = 1;
-            %else
-            %    freeSpaceCounter = freeSpaceCounter + 1;
-            %end
             freeSpaceCounter = freeSpaceCounter + 1;
            
             
@@ -131,7 +126,6 @@ function POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, 
     end
     
     
-    %firstPass.freeSpaceCounter
     % started and ended with free space
     if(freeSpaceCounter > 0 && firstPass.freeSpaceCounter > 0)
 
@@ -182,6 +176,21 @@ function POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, 
             POIcount = POIcount + 1;
             POI(POIcount) = circularEdgeLinkedList.node(1).nodeNum;  
         end
+        
+        % POI - go back and make POIs in free space 
+        if(freeSpaceFlag)
+
+            % go back and make POIs
+            for j = 1:freeSpaceCounter
+                if(mod(j,ceil(freeSpaceThreshold/2)) == 0)
+                    POIcount = POIcount + 1;
+                    POI(POIcount) = circularEdgeLinkedList.node(i-j).nodeNum;
+                end
+            end
+
+
+        end
+        
         
     % do not need to loop back to set another POI
     else

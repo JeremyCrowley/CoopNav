@@ -1,5 +1,5 @@
 
-function p = PlotDiscovered(env,oldHandle)
+function p = PlotDiscovered(env)
 
     % delete old handles
 
