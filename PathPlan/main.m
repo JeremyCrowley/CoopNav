@@ -25,11 +25,12 @@ E1 = AddSquare2D(E1,[12,11],1,4);
 
 
 
-figure(1)
-PlotCellDecomp(E1);
-
-
+%figure(1)
+%PlotCellDecomp(E1);
 %pause(20)
+
+
+
 % make and plot graph
 G = MakeGraph(E1);
 
@@ -53,7 +54,7 @@ figure(2)
 
 iterations = 45;
 
-pause(10)
+pause(5)
 
 agentPath = zeros(1,iterations);
 for i = 1:iterations
@@ -85,8 +86,8 @@ for i = 1:iterations
     end
     
     fprintf('Points of Interest: \n');
-    disp(POI);
-    disp(costList)
+    %disp(POI);
+    %disp(costList);
     [costMin, index] = min(costList);
     [path,d] = shortestpath(G,A1.currentNode,POI(index));
 
@@ -107,7 +108,7 @@ for i = 1:iterations
     c2 = ValToPosition(nextNode,E1);
     plot([c1(1),c2(1)],[c1(2),c2(2)],'green');
     
-    
+
     % set next node
     A1.currentNode = nextNode;
     
