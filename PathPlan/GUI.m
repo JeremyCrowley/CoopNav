@@ -94,8 +94,8 @@ txtrad  = uicontrol('Style','text',...
 
 arrowX = 150;
 arrowY = 150;
-arrowLen = 20;
-arrowHgt = 20;
+arrowLen = 30;
+arrowHgt = 30;
 
 
 hAddObj    = uicontrol('Style','togglebutton',...
@@ -153,6 +153,12 @@ hn.Units = 'normalized';
 txtn.Units = 'normalized';
 hrad.Units = 'normalized';
 txtrad.Units = 'normalized';
+hAddObj.Units = 'normalized';
+hDown.Units = 'normalized';
+hLeft.Units = 'normalized';
+hUp.Units = 'normalized';
+hRgt.Units = 'normalized';
+hSet.Units = 'normalized';
 
 % Assign the a name to appear in the window title.
 f.Name = 'Path Planning Simulation';
@@ -323,6 +329,10 @@ function rgt_button_Callback(hObject, eventdata)
     end
 end
 
+function set_button_Callback(hObject, eventdata)
+    
+end
+
 %% Helper functions
 
 function UpdateObj(coord, dim)
@@ -343,6 +353,8 @@ end
 
 %% global variables
 
+% object cursor
+
 function SetAddObjGlobal(coord, dim)
     global objCoord;
     global objDim;
@@ -356,3 +368,5 @@ function [coord, dim] = GetAddObjGlobal()
     coord = objCoord;
     dim = objDim;
 end
+
+% 
