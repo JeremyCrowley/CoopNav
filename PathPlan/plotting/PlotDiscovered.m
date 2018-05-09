@@ -5,6 +5,9 @@ function p = PlotDiscovered(env)
 
     [envHeight, envLength] = size(env.map);
     
+    % undiscovered count
+    j = 1;
+    
     for i = 1:envHeight*envLength
         
         
@@ -18,9 +21,13 @@ function p = PlotDiscovered(env)
             y = [center(2)-0.5 center(2)+0.5 center(2)+0.5 center(2)-0.5]; 
 
 
-            p(i) = patch(x,y,[0,0,0],'LineWidth',1);
-
+            p(j) = patch(x,y,[0,0,0],'LineWidth',1);
+            j = j+1;
         end
+    end
+    
+    if(j == 1)
+        p = scatter(0,0,'Visible','off');
     end
 
 

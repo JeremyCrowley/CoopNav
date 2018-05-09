@@ -4,40 +4,15 @@
 % % % % % % % % % % % % % % % % % % % % % % % % 
 % create a 8x8 environment with 4 obstacles   %
 % % % % % % % % % % % % % % % % % % % % % % % % 
-function simulate(m,n)
-
-
-    E1 = CreateEnv2D(m,n);
-
-    % AddSquare2D(env, corner, length, height)
-
-
-    E1 = AddSquare2D(E1,[3,3],3,1);
-    E1 = AddSquare2D(E1,[3,8],3,1);
-    E1 = AddSquare2D(E1,[4,15],6,2);
-    E1 = AddSquare2D(E1,[5,9],1,2);
-    E1 = AddSquare2D(E1,[6,1],1,8);
-    E1 = AddSquare2D(E1,[10,8],1,9);
-    E1 = AddSquare2D(E1,[10,3],1,2);
-    E1 = AddSquare2D(E1,[11,10],2,1);
-    E1 = AddSquare2D(E1,[14,14],3,1);
-
-
-    %figure(1)
-    %PlotCellDecomp(E1);
-    %pause(20)
-
-
-
+function simulate(E1,startCoord,targetCoord,radiusOfView)
     % make and plot graph
     G = MakeGraph(E1);
-
-    % set sim parameters
-    radiusOfView = 3;
-    startPos = [1, 1];
-    targetCoord = [16,16];
-    targetNode = PositionToVal(targetCoord,E1);
-    startNode = PositionToVal(startPos,E1);
+    
+   
+    % convert sim parameters
+    targetCoord
+    targetNode = PositionToVal(targetCoord,E1)
+    startNode = PositionToVal(startCoord,E1);
 
     % create agent and update environment
     A1 = CreateAgent(radiusOfView,startNode);

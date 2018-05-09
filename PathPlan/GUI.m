@@ -14,11 +14,11 @@ f = figure('Visible','off','Position',[0,0,1280,800]);
 %
 %
 
-ha = axes('Units','pixels','Position',[390,200,500,460]);
+ha = axes('Units','pixels','Position',[390,200,500,500]);
 
 
 
-%% Preview and execute simulation
+%% Preview and Execute Simulation
 %
 %
 %
@@ -32,59 +32,67 @@ hsim    = uicontrol('Style','pushbutton',...
              'String','Simulate','Position',[exX,exY,exLen,exHeight],...
              'Callback',@simbutton_Callback); 
 
-hpreview    = uicontrol('Style','pushbutton',...
-             'String','Preview','Position',[exX,exY+100,exLen,exHeight],...
-             'UserData',struct('plot',scatter(0,0),'envSize',[1,1],'env',0,'graph',digraph),...
-             'Tag','prev_button',...
-             'Callback',@previewbutton_Callback);
+
          
 
 
 
-%% Simulation parameters
+%% Environment Parameters
 %
 %
 %
 
-sliderX = 100;
-sliderY = 600;
-sliderLen = 200;
+panelEnvX = 100;
+panelEnvY = 400;
+panelEnvLen = 200;
+panelEnvHgt = 300;
+
+envP = uipanel('Title','Environment','FontSize',12,...
+             'Units','pixels',...
+             'Position',[panelEnvX,panelEnvY,panelEnvLen,panelEnvHgt]);
+
+sliderLen = 150;
+
+txtenv    = uicontrol('Style','text',...
+            'Parent',envP,...
+            'Position',[0,200,panelEnvLen,30],...
+            'Tag','env_txt',...
+            'String','Create an m by n cell decomposed environment');
 
 hm      = uicontrol('Style','slider',...
+             'Parent',envP,...
              'Tag', 'm_slide',...
              'SliderStep',[1/15 1/15],...
-             'Position',[sliderX,sliderY,sliderLen,25],...
+             'Position',[25,140,sliderLen,25],...
              'Min',5,'Max',20,'Value',5,...
              'Callback',@m_slide_Callback);
          
 txtm    = uicontrol('Style','text',...
-            'Position',[sliderX,sliderY-5,sliderLen,15],...
+            'Parent',envP,...
+            'Position',[0,130,panelEnvLen,15],...
             'Tag','m_txt',...
-            'String','5');
+            'String','m = 5');
          
 hn      = uicontrol('Style','slider',...
+             'Parent',envP,...
              'Tag', 'n_slide',...
              'SliderStep',[1/15 1/15],...
-             'Position',[sliderX,sliderY-40,sliderLen,25],...
+             'Position',[25,90,sliderLen,25],...
              'Min',5,'Max',20,'Value',5,...
              'Callback',@n_slide_Callback);
 
 txtn    = uicontrol('Style','text',...
-            'Position',[sliderX,sliderY-45,sliderLen,15],...
+            'Parent',envP,...
+            'Position',[0,80,panelEnvLen,15],...
             'Tag','n_txt',...
-            'String','5');
-    
-hrad    = uicontrol('Style','slider',...
-             'Tag', 'radius_slide',...
-             'SliderStep',[1/4 1/4],...
-             'Position',[sliderX,sliderY-80,sliderLen,25],...
-             'Min',2,'Max',6,'Value',2,...
-             'Callback',@radius_slide_Callback);
-         
-txtrad  = uicontrol('Style','text',...
-             'Position',[sliderX,sliderY-85,sliderLen,15],...
-             'Tag','radius_txt',...
-             'String','2');
+            'String','n = 5');
+        
+hupdatefield    = uicontrol('Style','pushbutton',...
+                 'Parent',envP,...
+                 'String','New Field','Position',[25,10,150,50],...
+                 'UserData',struct('plot',scatter(0,0),'envSize',[1,1],'env',0,'graph',digraph),...
+                 'Tag','updatefield_button',...
+                 'Callback',@updatefieldbutton_Callback);
 
          
 %% Add Objects
@@ -92,79 +100,150 @@ txtrad  = uicontrol('Style','text',...
 %
 %
 
-arrowX = 150;
-arrowY = 150;
+panelObjX = 100;
+panelObjY = 100;
+panelObjLen = 200;
+panelObjHgt = 300;
+
+objP = uipanel('Title','Add Objects','FontSize',12,...
+             'Units','pixels',...
+             'Position',[panelObjX,panelObjY,panelObjLen,panelObjHgt]);
+
+
 arrowLen = 30;
 arrowHgt = 30;
 
 
 hAddObj    = uicontrol('Style','togglebutton',...
+             'Parent',objP,...
              'String','Add Object',...
              'Value',1,...
-             'Position',[arrowX-30,arrowY+100,100,35],...
+             'Position',[panelObjLen/2-50,200,100,35],...
              'UserData',scatter(0,0),...
              'Tag','addobj_button',...
              'Callback',@addobj_button_Callback); 
 
 hDown    = uicontrol('Style','pushbutton',...
+             'Parent',objP,...
              'String','\/',...
-             'Position',[arrowX,arrowY,arrowLen,arrowHgt],...
+             'Position',[panelObjLen/2-arrowLen/2,2*arrowHgt,arrowLen,arrowHgt],...
              'Tag','down_button',...
              'Callback',@down_button_Callback); 
          
 hLeft    = uicontrol('Style','pushbutton',...
+             'Parent',objP,...
              'String','<',...
-             'Position',[arrowX-30,arrowY+30,arrowLen,arrowHgt],...
+             'Position',[panelObjLen/2-1.5*arrowLen,3*arrowHgt,arrowLen,arrowHgt],...
              'Tag','left_button',...
              'Callback',@left_button_Callback); 
          
 hUp    = uicontrol('Style','pushbutton',...
+             'Parent',objP,...
              'String','^',...
-             'Position',[arrowX,arrowY+60,arrowLen,arrowHgt],...
+             'Position',[panelObjLen/2-arrowLen/2,4*arrowLen,arrowLen,arrowHgt],...
              'Tag','up_button',...
              'Callback',@up_button_Callback); 
          
 hRgt    = uicontrol('Style','pushbutton',...
+             'Parent',objP,...
              'String','>',...
-             'Position',[arrowX+30,arrowY+30,arrowLen,arrowHgt],...
+             'Position',[panelObjLen/2+arrowLen/2,3*arrowHgt,arrowLen,arrowHgt],...
              'Tag','rgt_button',...
              'Callback',@rgt_button_Callback); 
          
 hSet    = uicontrol('Style','pushbutton',...
+             'Parent',objP,...
              'String','SET',...
-             'Position',[arrowX,arrowY+30,arrowLen,arrowHgt],...
+             'Position',[panelObjLen/2-arrowLen/2,3*arrowHgt,arrowLen,arrowHgt],...
              'Tag','set_button',...
              'UserData',scatter(0,0),...
              'Callback',@set_button_Callback); 
-
-
          
 hVert   = uicontrol('Style','slider',...
+             'Parent',objP,...
              'Tag', 'vert_slide',...
              'SliderStep',[1/5 1/5],...
-             'Position',[arrowX-arrowLen-35,arrowY-15,25,100],...
+             'Position',[10,45,25,100],...
              'Min',1,'Max',5,'Value',1,...
              'Callback',@vert_slide_Callback);
          
 txtVert  = uicontrol('Style','text',...
-             'Position',[arrowX-arrowLen-60,arrowY+15,30,30],...
+             'Parent',objP,...
+             'Position',[5,85,10,20],...
              'Tag','vert_txt',...
              'String','1');
          
 hHor    = uicontrol('Style','slider',...
+             'Parent',objP,...
              'Tag', 'hor_slide',...
              'SliderStep',[1/5 1/5],...
-             'Position',[arrowX-arrowLen,arrowY-50,100,25],...
+             'Position',[35,20,100,25],...
              'Min',1,'Max',5,'Value',1,...
              'Callback',@hor_slide_Callback);
              
 txtHor  = uicontrol('Style','text',...
-             'Position',[arrowX-arrowLen+35,arrowY-75,30,30],...
+             'Parent',objP,...
+             'Position',[80,10,10,20],...
              'Tag','hor_txt',...
              'String','1');
 
 
+%% Add Agent
+%
+%
+%
 
+panelAgentX = 980;
+panelAgentY = 300;
+panelAgentLen = 200;
+panelAgentHgt = 300;
+
+agentP = uipanel('Title','Add Agent','FontSize',12,...
+             'Units','pixels',...
+             'Position',[panelAgentX,panelAgentY,panelAgentLen,panelAgentHgt]);
+
+hagentpos = uicontrol(agentP, 'Style','edit',...
+             'Position',[panelAgentLen/2-25,200,50,25],... 
+             'UserData',struct('x',1,'y',1),...
+             'CallBack',@agentpos_edit_Callback,...
+             'Tag','agentpos_edit',...
+             'String','(1,1)');
+         
+txtagent = uicontrol('Style','text',...
+             'Parent',agentP,...
+             'Position',[0,180,panelAgentLen,20],...
+             'Tag','agent_txt',...
+             'String','Agent Coordinates');
+         
+htargetpos = uicontrol(agentP, 'Style','edit',...
+             'Position',[panelAgentLen/2-25,150,50,25],... 
+             'UserData',struct('x',1,'y',1),...
+             'CallBack',@targetpos_edit_Callback,...
+             'Tag','targetpos_edit',...
+             'String','(1,1)');
+         
+txttarget  = uicontrol('Style','text',...
+             'Parent',agentP,...
+             'Position',[0,130,panelAgentLen,20],...
+             'Tag','target_txt',...
+             'String','Target Coordinates');
+         
+         
+hrad    = uicontrol('Style','slider',...
+             'Parent',agentP,...
+             'Tag', 'radius_slide',...
+             'SliderStep',[1/4 1/4],...
+             'Position',[panelAgentLen/2-75,100,150,25],...
+             'Min',2,'Max',6,'Value',2,...
+             'Callback',@radius_slide_Callback);
+         
+txtrad  = uicontrol('Style','text',...
+             'Parent',agentP,...
+             'Position',[0,90,panelAgentLen,20],...
+             'Tag','radius_txt',...
+             'String','2');
+         
+         
 %% Initialize the UI.
 %
 %
@@ -173,14 +252,16 @@ txtHor  = uicontrol('Style','text',...
 % Change units to normalized so components resize automatically.
 f.Units = 'normalized';
 ha.Units = 'normalized';
-hpreview.Units = 'normalized';
+hupdatefield.Units = 'normalized';
 hsim.Units = 'normalized';
+envP.Units = 'normalized';
 hm.Units = 'normalized';
 txtm.Units = 'normalized';
 hn.Units = 'normalized';
 txtn.Units = 'normalized';
 hrad.Units = 'normalized';
 txtrad.Units = 'normalized';
+objP.Units = 'normalized';
 hAddObj.Units = 'normalized';
 hDown.Units = 'normalized';
 hLeft.Units = 'normalized';
@@ -191,7 +272,13 @@ hVert.Units = 'normalized';
 txtVert.Units = 'normalized';
 hHor.Units = 'normalized';
 txtHor.Units = 'normalized';
-
+agentP.Units = 'normalized';
+hagentpos.Units = 'normalized';
+txtagent.Units = 'normalized';
+htargetpos.Units = 'normalized';
+txttarget.Units = 'normalized';
+hrad.Units = 'normalized';
+txtrad.Units = 'normalized';
 
 % Assign the a name to appear in the window title.
 f.Name = 'Path Planning Simulation';
@@ -201,8 +288,8 @@ f.Visible = 'on';
 
 
 % simulate preview being pressed in order to generate empty field
-h = findobj('Tag','prev_button');
-previewbutton_Callback(h,0); 
+h = findobj('Tag','updatefield_button');
+updatefieldbutton_Callback(h,0); 
 
 % initialize obj marker
 SetAddObjGlobal([1,1],[1,1]);
@@ -212,22 +299,37 @@ UpdateObj(coord,dim);
 
 
 
-%% Callback functions
+%% Callback Functions
+%
+%
+%
+
+%% Simulate/Preview Callbacks
+%
+%
+%
 
 function simbutton_Callback(hObject,eventdata) 
     
-    h = findobj('Tag','n_slide');
-    n = h.Value
+    h = findobj('Tag','updatefield_button');
+    environment = h.UserData.env;
+    
+    hagent = findobj('Tag','agentpos_edit');
+    agentPos = zeros(1,2);
+    agentPos(1) = str2double(hagent.UserData.x);
+    agentPos(2) = str2double(hagent.UserData.y);
+    
+    htarg = findobj('Tag','targetpos_edit');
+    targetPos= zeros(1,2);
+    targetPos(1) = str2double(htarg.UserData.x);
+    targetPos(2) = str2double(htarg.UserData.y);
 
-    h = findobj('Tag','m_slide');
-    m = h.Value
-
-    %simulate(16,16)
+    simulate(environment,agentPos,targetPos,3)
     disp('SIMULATE');
 
 end
 
-function previewbutton_Callback(hObject,eventdata) 
+function updatefieldbutton_Callback(hObject,eventdata) 
     
     delete(hObject.UserData.plot)
 
@@ -255,7 +357,10 @@ function previewbutton_Callback(hObject,eventdata)
 end
   
 
-% slider call backs
+%% Field Size Callbacks
+%
+%
+%
 
 function m_slide_Callback(hObject, eventdata)
 
@@ -266,7 +371,8 @@ function m_slide_Callback(hObject, eventdata)
 
     % update text box
     h = findobj('Tag','m_txt');
-	h.String = hObject.Value;
+	str = sprintf('m = %d',hObject.Value);
+	h.String = str;
 end
 
 function n_slide_Callback(hObject, eventdata)
@@ -278,7 +384,54 @@ function n_slide_Callback(hObject, eventdata)
     
     % update text box
     h = findobj('Tag','n_txt');
-	h.String = hObject.Value;
+    str = sprintf('n = %d',hObject.Value);
+	h.String = str;
+end
+
+%% Agent Callbacks
+%
+%
+%
+
+function agentpos_edit_Callback(hObject, eventdata)
+    str = get(hObject,'string');
+    
+    in1 = strfind(str,'(');
+    in2 = strfind(str,',');
+    in3 = strfind(str,')');
+    
+    if(length(in1) ~= 1 || length(in2) ~= 1  || length(in3) ~= 1)
+        warning('USER ERROR: Incorrect input format for agent coordinates')
+    end
+    
+    aX = str(in1+1:in2-1);
+    aY = str(in2+1:in3-1);
+    
+    hObject.UserData.x = aX;
+    hObject.UserData.y = aY;
+    
+
+end
+
+function targetpos_edit_Callback(hObject, eventdata)
+    str = get(hObject,'string');
+    
+    in1 = strfind(str,'(');
+    in2 = strfind(str,',');
+    in3 = strfind(str,')');
+    
+    if(length(in1) ~= 1 || length(in2) ~= 1  || length(in3) ~= 1)
+        warning('USER ERROR: Incorrect input format for target coordinates')
+    end
+    
+    aX = str(in1+1:in2-1);
+    aY = str(in2+1:in3-1);
+    
+    hObject.UserData.x = aX;
+    hObject.UserData.y = aY;
+    
+    
+
 end
 
 function radius_slide_Callback(hObject, eventdata)
@@ -293,6 +446,8 @@ function radius_slide_Callback(hObject, eventdata)
 	h.String = hObject.Value;
 end
 
+%% Set Object Callbacks
+
 function vert_slide_Callback(hObject, eventdata)
 
     % round to whole number
@@ -300,7 +455,7 @@ function vert_slide_Callback(hObject, eventdata)
     newval = round(newval);
     
     % get env size
-    h = findobj('Tag','prev_button');
+    h = findobj('Tag','updatefield_button');
     envSize = h.UserData.envSize;
     
     [coord, dim] = GetAddObjGlobal();
@@ -331,7 +486,7 @@ function hor_slide_Callback(hObject, eventdata)
     newval = round(newval);
     
     % get env size
-    h = findobj('Tag','prev_button');
+    h = findobj('Tag','updatefield_button');
     envSize = h.UserData.envSize;
     
     [coord, dim] = GetAddObjGlobal();
@@ -432,7 +587,7 @@ end
 function up_button_Callback(hObject, eventdata)
     [coord, dim] = GetAddObjGlobal();
     
-    h = findobj('Tag','prev_button');
+    h = findobj('Tag','updatefield_button');
     envSize = h.UserData.envSize;
     
     % check that moving up is within env limits
@@ -448,7 +603,7 @@ end
 function rgt_button_Callback(hObject, eventdata)
     [coord, dim] = GetAddObjGlobal();
     
-    h = findobj('Tag','prev_button');
+    h = findobj('Tag','updatefield_button');
     envSize = h.UserData.envSize;
     
     % check that moving right is within env limits
@@ -464,7 +619,7 @@ end
 function set_button_Callback(hObject, eventdata)
 
     % remove old env
-    h = findobj('Tag','prev_button');
+    h = findobj('Tag','updatefield_button');
     delete(h.UserData.plot)
     
     % get current obj data
@@ -478,6 +633,9 @@ function set_button_Callback(hObject, eventdata)
 end
 
 %% Helper functions
+%
+%
+%
 
 function UpdateObj(coord, dim)
     h = findobj('Tag','addobj_button');
@@ -507,6 +665,9 @@ end
 
 
 %% global variables
+%
+%
+%
 
 % object cursor
 
