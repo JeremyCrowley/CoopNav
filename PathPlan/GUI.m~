@@ -18,24 +18,6 @@ ha = axes('Units','pixels','Position',[390,200,500,500]);
 
 
 
-%% Preview and Execute Simulation
-%
-%
-%
-
-exX = 1000;
-exY = 100;
-exLen = 200;
-exHeight = 50;
-
-hsim    = uicontrol('Style','pushbutton',...
-             'String','Simulate','Position',[exX,exY,exLen,exHeight],...
-             'Callback',@simbutton_Callback); 
-
-
-         
-
-
 
 %% Environment Parameters
 %
@@ -58,6 +40,12 @@ txtenv    = uicontrol('Style','text',...
             'Position',[0,200,panelEnvLen,30],...
             'Tag','env_txt',...
             'String','Create an m by n cell decomposed environment');
+        
+txtenvdim = uicontrol('Style','text',...
+            'Parent',envP,...
+            'Position',[0,160,panelEnvLen,30],...
+            'Tag','envdim_txt',...
+            'String','Current size: 5x5');
 
 hm      = uicontrol('Style','slider',...
              'Parent',envP,...
@@ -194,7 +182,7 @@ txtHor  = uicontrol('Style','text',...
 %
 
 panelAgentX = 980;
-panelAgentY = 300;
+panelAgentY = 400;
 panelAgentLen = 200;
 panelAgentHgt = 300;
 
@@ -242,7 +230,37 @@ txtrad  = uicontrol('Style','text',...
              'Position',[0,90,panelAgentLen,20],...
              'Tag','radius_txt',...
              'String','2');
+
          
+%% Preview and Execute Simulation
+%
+%
+%
+
+panelSimX = 980;
+panelSimY = 100;
+panelSimLen = 200;
+panelSimHgt = 250;
+
+envS = uipanel('Title','Simulation','FontSize',12,...
+             'Units','pixels',...
+             'Position',[panelSimX,panelSimY,panelSimLen,panelSimHgt]);
+
+exLen = 150;
+exHeight = 50;
+
+hsim    = uicontrol('Style','pushbutton',...
+             'Parent',envS,...
+             'String','Simulate','Position',[25,25,exLen,exHeight],...
+             'Callback',@simbutton_Callback); 
+         
+hiter    = uicontrol('Style','edit',...
+             'Parent',envS,...
+             'String','Simulate','Position',[75,150,50,25],...
+             'Callback',@iter_button_Callback,...
+             'UserData',20,...
+             'Tag','iterations_edit',...
+             'String','20'); 
          
 %% Initialize the UI.
 %
@@ -312,19 +330,27 @@ UpdateObj(coord,dim);
 function simbutton_Callback(hObject,eventdata) 
     
     h = findobj('Tag','updatefield_button');
-    environment = h.UserData.env;
+    environment = h.UserData.env
+    envGraph = h.UserData.graph;
     
     hagent = findobj('Tag','agentpos_edit');
     agentPos = zeros(1,2);
-    agentPos(1) = str2double(hagent.UserData.x);
-    agentPos(2) = str2double(hagent.UserData.y);
+    agentPos(1) = hagent.UserData.x;
+    agentPos(2) = hagent.UserData.y;
     
     htarg = findobj('Tag','targetpos_edit');
-    targetPos= zeros(1,2);
-    targetPos(1) = str2double(htarg.UserData.x);
-    targetPos(2) = str2double(htarg.UserData.y);
+    targetPos = zeros(1,2);
+    targetPos(1) = htarg.UserData.x;
+    targetPos(2) = htarg.UserData.y;
+    
+    hrad = findobj('Tag','radius_slide');
+    radOfView = hrad.Value;
+    
+    hiter = findobj('Tag','iterations_edit');
+    iterations = (hiter.UserData);
+    
 
-    simulate(environment,agentPos,targetPos,3)
+    simulate(environment,envGraph,agentPos,targetPos,radOfView, iterations)
     disp('SIMULATE');
 
 end
@@ -345,6 +371,11 @@ function updatefieldbutton_Callback(hObject,eventdata)
     h = findobj('Tag','hor_slide');
     h.Max = n;
     
+    h = findobj('Tag','envdim_txt');
+    str = sprintf('Current Dimensions: %d x %d',m,n);
+    set(h, 'String', str); 
+    
+    
     E1 = CreateEnv2D(m,n);
     G = MakeGraph(E1);
     
@@ -356,6 +387,11 @@ function updatefieldbutton_Callback(hObject,eventdata)
     
 end
   
+
+function iter_button_Callback(hObject, eventdata)
+    str = get(hObject,'string');
+    hObject.UserData = str2double(str);
+end
 
 %% Field Size Callbacks
 %
@@ -386,6 +422,7 @@ function n_slide_Callback(hObject, eventdata)
     h = findobj('Tag','n_txt');
     str = sprintf('n = %d',hObject.Value);
 	h.String = str;
+    
 end
 
 %% Agent Callbacks
@@ -401,16 +438,15 @@ function agentpos_edit_Callback(hObject, eventdata)
     in3 = strfind(str,')');
     
     if(length(in1) ~= 1 || length(in2) ~= 1  || length(in3) ~= 1)
-        error('Incorrent input format for agent coordinates')
+        warning('USER ERROR: Incorrect input format for agent coordinates')
     end
     
     aX = str(in1+1:in2-1);
     aY = str(in2+1:in3-1);
     
-    hObject.UserData.x = aX;
-    hObject.UserData.y = aY;
+    hObject.UserData.x = str2double(aX);
+    hObject.UserData.y = str2double(aY);
     
-
 end
 
 function targetpos_edit_Callback(hObject, eventdata)
@@ -421,16 +457,14 @@ function targetpos_edit_Callback(hObject, eventdata)
     in3 = strfind(str,')');
     
     if(length(in1) ~= 1 || length(in2) ~= 1  || length(in3) ~= 1)
-        error('Incorrect input format for target coordinates')
+        warning('USER ERROR: Incorrect input format for target coordinates')
     end
     
     aX = str(in1+1:in2-1);
     aY = str(in2+1:in3-1);
     
-    hObject.UserData.x = aX;
-    hObject.UserData.y = aY;
-    
-    
+    hObject.UserData.x = str2double(aX);
+    hObject.UserData.y = str2double(aY);
 
 end
 
@@ -444,6 +478,7 @@ function radius_slide_Callback(hObject, eventdata)
     % update text box
     h = findobj('Tag','radius_txt');
 	h.String = hObject.Value;
+    
 end
 
 %% Set Object Callbacks

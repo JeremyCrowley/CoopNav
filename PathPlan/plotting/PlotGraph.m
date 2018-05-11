@@ -25,7 +25,7 @@ function [pCell, pDiscovered, pPOI, pAgent] = PlotGraph(graphEdges,circularEdgeL
     pDiscovered = PlotDiscovered(env);
     
     pPOI = PlotPOI(POI,env);
-    set(pPOI,'Visible','off')
+    set(pPOI,'Visible','on')
      
     % plot location of agent
     agentCoords = ValToPosition(agent.currentNode,env);
