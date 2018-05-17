@@ -4,7 +4,7 @@
 %
 % GraphEdges - the edges of the graph
 
-function [pCell, pDiscovered, pPOI, pAgent] = PlotGraph(graphEdges,circularEdgeLinkedList,POI,env,agent,pCellOld,pDiscoveredOld, pPOIOld, pAgentOld)
+function [pCell, pDiscovered, pPOI, pAgent] = PlotGraph(graphEdges,circularEdgeLinkedList,POI,env,agent,pCellOld,pDiscoveredOld, pPOIOld, pAgentOld,dispPOI)
 
     hold on
     grid on
@@ -25,7 +25,12 @@ function [pCell, pDiscovered, pPOI, pAgent] = PlotGraph(graphEdges,circularEdgeL
     pDiscovered = PlotDiscovered(env);
     
     pPOI = PlotPOI(POI,env);
-    set(pPOI,'Visible','on')
+    if(dispPOI)
+        set(pPOI,'Visible','on');
+    else
+        set(pPOI,'Visible','off');
+    end
+        
      
     % plot location of agent
     agentCoords = ValToPosition(agent.currentNode,env);

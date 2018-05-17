@@ -6,7 +6,7 @@ function [nextCoord, circularEdgeLinkedList, POI] = PathPlan(environment,G,agent
         circularEdgeLinkedList = GetMapEdge(environment);
 
         % find points of interest
-        freeSpaceThreshold = 4;
+        freeSpaceThreshold = 1;
         POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, environment, targetNode);
 
 
@@ -38,7 +38,7 @@ function [nextCoord, circularEdgeLinkedList, POI] = PathPlan(environment,G,agent
         % trace agents trajectory
         c1 = ValToPosition(agent.currentNode,environment);
         c2 = ValToPosition(nextNode,environment);
-        plot([c1(1),c2(1)],[c1(2),c2(2)],'green','LineWidth',3);
+        %plot([c1(1),c2(1)],[c1(2),c2(2)],'green','LineWidth',3);
         
         nextCoord = c2;
 end
