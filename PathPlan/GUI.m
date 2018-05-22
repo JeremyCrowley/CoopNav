@@ -239,9 +239,9 @@ txtrad  = uicontrol('Style','text',...
 %
 
 panelSaveX = 980;
-panelSaveY = 270;
+panelSaveY = 300;
 panelSaveLen = 200;
-panelSaveHgt = 160;
+panelSaveHgt = 200;
 
 saveP = uipanel('Title','Save Environment','FontSize',12,...
                 'Units','pixels',...
@@ -250,9 +250,17 @@ saveP = uipanel('Title','Save Environment','FontSize',12,...
 hsave    = uicontrol('Style','pushbutton',...
              'Parent',saveP,...
              'String','Save Environment',...
-             'Position',[25,25,150,50],...
-             'Tag','poi_toggle'); 
+             'Position',[25,85,150,50],...
+             'Callback',@savebutton_Callback,...
+             'Tag','save_button'); 
          
+hload    = uicontrol('Style','pushbutton',...
+             'Parent',saveP,...
+             'String','Load Environment',...
+             'Position',[25,25,150,50],...
+             'Callback',@loadbutton_Callback,...
+             'Tag','load_button'); 
+
          
          
 %% Preview and Execute Simulation
@@ -275,7 +283,7 @@ exHeight = 50;
 hsim    = uicontrol('Style','pushbutton',...
              'Parent',envS,...
              'String','Simulate',...
-             'Position',[25,25,exLen,exHeight],...
+             'Position',[25,25,exLen,50],...
              'UserData',struct('discovered',plot(0,0,'Visible','off'),'POI',plot(0,0,'Visible','off'),'agent',plot(0,0,'Visible','off'),'cell',plot(0,0,'Visible','off'),'path',plot(0,0,'Visible','off')),...
              'Callback',@simbutton_Callback,...
              'Tag','sim_button'); 
@@ -284,7 +292,7 @@ hpoi    = uicontrol('Style','togglebutton',...
              'Parent',envS,...
              'String','Show Points of Interest',...
              'Value',1,...
-             'Position',[25,125,exLen,exHeight],...
+             'Position',[25,95,exLen,50],...
              'Tag','poi_toggle'); 
 
          
@@ -326,6 +334,12 @@ hrad.Units = 'normalized';
 txtrad.Units = 'normalized';
 envS.Units = 'normalized';
 hsim.Units = 'normalized';
+hpoi.Units = 'normalized';
+saveP.Units = 'normalized';
+hsave.Units = 'normalized';
+hload.Units = 'normalized';
+
+
 
 % Assign the a name to appear in the window title.
 f.Name = 'Path Planning Simulation';
@@ -440,7 +454,71 @@ function updatefieldbutton_Callback(hObject,eventdata)
     
     
 end
-  
+
+
+%% Save Field Callbacks
+
+function savebutton_Callback(hObject, eventdata)
+    
+    h = findobj('Tag','updatefield_button');
+    env = h.UserData.env;
+    
+    uisave('env');
+end
+
+function loadbutton_Callback(hOBject, eventdata)
+    [file,path] = uigetfile('*.mat');
+    if(file)
+        envFile = sprintf('%s%s',path,file);
+        env = load(envFile);
+        [m,n] = size(env.env.map);
+
+        hUpdate = findobj('Tag','updatefield_button');
+        delete(hUpdate.UserData.plot);
+
+        h = findobj('Tag','n_slide');
+        h.Value = n;
+        
+        h = findobj('Tag','n_txt');
+        str = sprintf('n = %d',n);
+        h.String = str;
+
+        h = findobj('Tag','m_slide');
+        h.Value = m;
+        
+        h = findobj('Tag','m_txt');
+        str = sprintf('m = %d',m);
+        h.String = str;
+
+        h = findobj('Tag','vert_slide');
+        h.Max = m;
+        h.SliderStep = [1/m 1/m];
+
+        h = findobj('Tag','hor_slide');
+        h.Max = n;
+        h.SliderStep = [1/m 1/m];
+        
+        h = findobj('Tag','envdim_txt');
+        str = sprintf('Current Dimensions: %d x %d',m,n);
+        set(h, 'String', str); 
+        
+        h = findobj('Tag','sim_button');
+        delete(h.UserData.discovered);
+        delete(h.UserData.POI);
+        delete(h.UserData.agent);
+        delete(h.UserData.cell);
+        delete(h.UserData.path);
+        
+        E1 = env.env;
+        G = MakeGraph(E1);
+    
+        hUpdate.UserData.plot = PlotCellDecomp(E1);
+        hUpdate.UserData.envSize = [m,n];
+        hUpdate.UserData.env = E1;
+        hUpdate.UserData.graph = G;
+        
+    end
+end
 
 
 %% Field Size Callbacks
