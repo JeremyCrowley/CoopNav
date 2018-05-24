@@ -157,7 +157,7 @@ hVert   = uicontrol('Style','slider',...
          
 txtVert  = uicontrol('Style','text',...
              'Parent',objP,...
-             'Position',[5,85,10,20],...
+             'Position',[5,85,10,15],...
              'Tag','vert_txt',...
              'String','1');
          
@@ -171,7 +171,7 @@ hHor    = uicontrol('Style','slider',...
              
 txtHor  = uicontrol('Style','text',...
              'Parent',objP,...
-             'Position',[80,10,10,20],...
+             'Position',[80,10,10,15],...
              'Tag','hor_txt',...
              'String','1');
 
@@ -190,31 +190,51 @@ agentP = uipanel('Title','Add Agent','FontSize',12,...
              'Units','pixels',...
              'Position',[panelAgentX,panelAgentY,panelAgentLen,panelAgentHgt]);
 
-hagentpos = uicontrol('Style','edit',...
+hagentxpos = uicontrol('Style','edit',...
              'Parent',agentP,...
-             'Position',[75,140,50,25],... 
-             'UserData',struct('x',1,'y',1),...
-             'CallBack',@agentpos_edit_Callback,...
-             'Tag','agentpos_edit',...
-             'String','(1,1)');
+             'Position',[75,140,20,25],... 
+             'UserData',1,...
+             'CallBack',@agentxpos_edit_Callback,...
+             'Tag','agentxpos_edit',...
+             'String','1');
+         
+hagentypos = uicontrol('Style','edit',...
+             'Parent',agentP,...
+             'Position',[105,140,20,25],... 
+             'UserData',1,...
+             'CallBack',@agentypos_edit_Callback,...
+             'Tag','agentypos_edit',...
+             'String','1');
          
 txtagent = uicontrol('Style','text',...
              'Parent',agentP,...
              'Position',[0,120,panelAgentLen,20],...
+             'UserData',plot(0,0,'Visible','off'),...
              'Tag','agent_txt',...
              'String','Agent Coordinates');
          
-htargetpos = uicontrol('Style','edit',...
+         
+         
+htargetxpos = uicontrol('Style','edit',...
              'Parent',agentP,...
-             'Position',[75,90,50,25],... 
-             'UserData',struct('x',1,'y',1),...
-             'CallBack',@targetpos_edit_Callback,...
-             'Tag','targetpos_edit',...
-             'String','(1,1)');
+             'Position',[75,90,20,25],... 
+             'UserData',1,...
+             'CallBack',@targetxpos_edit_Callback,...
+             'Tag','targetxpos_edit',...
+             'String','1');
+         
+htargetypos = uicontrol('Style','edit',...
+             'Parent',agentP,...
+             'Position',[105,90,20,25],... 
+             'UserData',1,...
+             'CallBack',@targetypos_edit_Callback,...
+             'Tag','targetypos_edit',...
+             'String','1');
          
 txttarget  = uicontrol('Style','text',...
              'Parent',agentP,...
              'Position',[0,70,panelAgentLen,20],...
+             'UserData',plot(0,0,'Visible','off'),...
              'Tag','target_txt',...
              'String','Target Coordinates');
          
@@ -231,7 +251,7 @@ txtrad  = uicontrol('Style','text',...
              'Parent',agentP,...
              'Position',[0,10,panelAgentLen,20],...
              'Tag','radius_txt',...
-             'String','2');
+             'String','Radius of view = 2');
 
 %% Save Sim
 %
@@ -239,9 +259,9 @@ txtrad  = uicontrol('Style','text',...
 %
 
 panelSaveX = 980;
-panelSaveY = 300;
+panelSaveY = 330;
 panelSaveLen = 200;
-panelSaveHgt = 200;
+panelSaveHgt = 170;
 
 saveP = uipanel('Title','Save Environment','FontSize',12,...
                 'Units','pixels',...
@@ -271,7 +291,7 @@ hload    = uicontrol('Style','pushbutton',...
 panelSimX = 980;
 panelSimY = 100;
 panelSimLen = 200;
-panelSimHgt = 200;
+panelSimHgt = 230;
 
 envS = uipanel('Title','Simulation','FontSize',12,...
              'Units','pixels',...
@@ -288,12 +308,36 @@ hsim    = uicontrol('Style','pushbutton',...
              'Callback',@simbutton_Callback,...
              'Tag','sim_button'); 
          
+hclear = uicontrol('Style','pushbutton',...
+             'Parent',envS,...
+             'String','Clear',...
+             'Position',[25,90,exLen,50],...
+             'Callback',@clearbutton_Callback,...
+             'Tag','clear_button');      
+         
 hpoi    = uicontrol('Style','togglebutton',...
              'Parent',envS,...
              'String','Show Points of Interest',...
              'Value',1,...
-             'Position',[25,95,exLen,50],...
+             'Position',[25,155,exLen,50],...
              'Tag','poi_toggle'); 
+         
+
+
+         
+%% Warning Box
+%
+%
+%
+
+
+
+hwarning    = uicontrol('Style','text',...
+                'Position',[390,50,500,50],...
+                'Tag','warning_txt',...
+                'String','');
+
+
 
          
          
@@ -326,14 +370,17 @@ txtVert.Units = 'normalized';
 hHor.Units = 'normalized';
 txtHor.Units = 'normalized';
 agentP.Units = 'normalized';
-hagentpos.Units = 'normalized';
+hagentxpos.Units = 'normalized';
+hagentypos.Units = 'normalized';
 txtagent.Units = 'normalized';
-htargetpos.Units = 'normalized';
+htargetxpos.Units = 'normalized';
+htargetypos.Units = 'normalized';
 txttarget.Units = 'normalized';
 hrad.Units = 'normalized';
 txtrad.Units = 'normalized';
 envS.Units = 'normalized';
 hsim.Units = 'normalized';
+hclear.Units = 'normalized';
 hpoi.Units = 'normalized';
 saveP.Units = 'normalized';
 hsave.Units = 'normalized';
@@ -344,9 +391,6 @@ hload.Units = 'normalized';
 % Assign the a name to appear in the window title.
 f.Name = 'Path Planning Simulation';
 
-% Make the window visible.
-f.Visible = 'on';
-
 
 % simulate preview being pressed in order to generate empty field
 h = findobj('Tag','updatefield_button');
@@ -356,6 +400,19 @@ updatefieldbutton_Callback(h,0);
 SetAddObjGlobal([1,1],[1,1]);
 [coord, dim] = GetAddObjGlobal();
 UpdateObj(coord,dim);
+
+% initialize warning obj
+SetWarningGlobal('No Warnings :)');
+
+
+hold on
+txtagent.UserData = scatter(1,1,50,[0 1 0],'*');
+txttarget.UserData = scatter(1,1,50,[1 0 0],'*');
+%agentxpos_edit_Callback(txtagent, 0);
+%targetxpos_edit_Callback(txttarget, 0);
+
+% Make the window visible.
+f.Visible = 'on';
 
 
 
@@ -376,41 +433,66 @@ function simbutton_Callback(hObject,eventdata)
     environment = h.UserData.env;
     envGraph = h.UserData.graph;
     
-    hagent = findobj('Tag','agentpos_edit');
+    hagentx = findobj('Tag','agentxpos_edit');
+    hagenty = findobj('Tag','agentypos_edit');
     agentPos = zeros(1,2);
-    agentPos(1) = hagent.UserData.x;
-    agentPos(2) = hagent.UserData.y;
+    agentPos(1) = hagentx.UserData;
+    agentPos(2) = hagenty.UserData;
     
-    htarg = findobj('Tag','targetpos_edit');
+    htargx = findobj('Tag','targetxpos_edit');
+    htargy = findobj('Tag','targetypos_edit');
     targetPos = zeros(1,2);
-    targetPos(1) = htarg.UserData.x;
-    targetPos(2) = htarg.UserData.y;
+    targetPos(1) = htargx.UserData;
+    targetPos(2) = htargy.UserData;
     
-    hrad = findobj('Tag','radius_slide');
-    radOfView = hrad.Value;
+    if(IsCoordObst(agentPos,environment) || IsCoordObst(targetPos,environment)) 
+        hwarn = findobj('Tag','warning_txt');
+        hwarn.String = 'WARNING: Agent or Target coordinates is inside an obstacle';
+        
+    else
+        
+        hwarn = findobj('Tag','warning_txt');
+        hwarn.String = 'No Warnings :)';
     
-    
-    delete(hObject.UserData.discovered);
-    delete(hObject.UserData.POI);
-    delete(hObject.UserData.agent);
-    delete(hObject.UserData.cell);
-    delete(hObject.UserData.path);
-    
-    
-    hpoi = findobj('Tag','poi_toggle');
-    dispPOI = hpoi.Value;
-    
-    
-    [iterations,pDiscovered,pPOI,pAgent,pCell,pPath] = simulate(environment,envGraph,agentPos,targetPos,radOfView,dispPOI);
-    
-    
-    hObject.UserData.discovered = pDiscovered;
-    hObject.UserData.POI = pPOI;
-    hObject.UserData.agent = pAgent;
-    hObject.UserData.cell = pCell;
-    hObject.UserData.path = pPath;
-    
-    fprintf('Simulation Complete - %d iterations',iterations);
+        hrad = findobj('Tag','radius_slide');
+        radOfView = hrad.Value;
+
+
+        delete(hObject.UserData.discovered);
+        delete(hObject.UserData.POI);
+        delete(hObject.UserData.agent);
+        delete(hObject.UserData.cell);
+        delete(hObject.UserData.path);
+
+
+        hpoi = findobj('Tag','poi_toggle');
+        dispPOI = hpoi.Value;
+
+
+        set(hObject,'Enable','off');
+        [iterations,pDiscovered,pPOI,pAgent,pCell,pPath] = simulate(environment,envGraph,agentPos,targetPos,radOfView,dispPOI);
+        set(hObject,'Enable','on');
+
+        hObject.UserData.discovered = pDiscovered;
+        hObject.UserData.POI = pPOI;
+        hObject.UserData.agent = pAgent;
+        hObject.UserData.cell = pCell;
+        hObject.UserData.path = pPath;
+
+        fprintf('Simulation Complete - %d iterations',iterations);
+    end
+
+end
+
+function clearbutton_Callback(hObject,eventdata) 
+
+    hsim = findobj('Tag','sim_button');
+   
+    delete(hsim.UserData.discovered);
+    delete(hsim.UserData.POI);
+    delete(hsim.UserData.agent);
+    delete(hsim.UserData.cell);
+    delete(hsim.UserData.path);
 
 end
 
@@ -463,11 +545,19 @@ function savebutton_Callback(hObject, eventdata)
     h = findobj('Tag','updatefield_button');
     env = h.UserData.env;
     
+    % save to environments folder
+    cd('environments');
     uisave('env');
+    cd('..');
+    
 end
 
 function loadbutton_Callback(hOBject, eventdata)
+
+    cd('environments');
     [file,path] = uigetfile('*.mat');
+    cd('..');
+    
     if(file)
         envFile = sprintf('%s%s',path,file);
         env = load(envFile);
@@ -558,42 +648,89 @@ end
 %
 %
 
-function agentpos_edit_Callback(hObject, eventdata)
+function agentxpos_edit_Callback(hObject, eventdata)
+
+    hn = findobj('Tag','n_slide');
     str = get(hObject,'string');
     
-    in1 = strfind(str,'(');
-    in2 = strfind(str,',');
-    in3 = strfind(str,')');
-    
-    if(length(in1) ~= 1 || length(in2) ~= 1  || length(in3) ~= 1)
-        warning('USER ERROR: Incorrect input format for agent coordinates')
+    if(str2double(str) > hn.Value)
+        hObject.UserData = hn.Value;
+        hObject.String = num2str(hn.Value);
+    else
+        hObject.UserData = str2double(str);
     end
     
-    aX = str(in1+1:in2-1);
-    aY = str(in2+1:in3-1);
+    hagenty = findobj('Tag','agentypos_edit');
+    x = hObject.UserData;
+    y = hagenty.UserData;
     
-    hObject.UserData.x = str2double(aX);
-    hObject.UserData.y = str2double(aY);
-    
+    pAg = findobj('Tag','agent_txt');
+    delete(pAg.UserData);
+    hold on;
+    pAg.UserData = scatter(x,y,50,[0 1 0],'*');
 end
 
-function targetpos_edit_Callback(hObject, eventdata)
+function agentypos_edit_Callback(hObject, eventdata)
+    hm = findobj('Tag','m_slide');
     str = get(hObject,'string');
     
-    in1 = strfind(str,'(');
-    in2 = strfind(str,',');
-    in3 = strfind(str,')');
-    
-    if(length(in1) ~= 1 || length(in2) ~= 1  || length(in3) ~= 1)
-        warning('USER ERROR: Incorrect input format for target coordinates')
+    if(str2double(str) > hm.Value)
+        hObject.UserData = hm.Value;
+        hObject.String = num2str(hm.Value);
+    else
+        hObject.UserData = str2double(str);
     end
     
-    aX = str(in1+1:in2-1);
-    aY = str(in2+1:in3-1);
+    hagentx = findobj('Tag','agentxpos_edit');
+    x = hagentx.UserData;
+    y = hObject.UserData;
     
-    hObject.UserData.x = str2double(aX);
-    hObject.UserData.y = str2double(aY);
+    pAgent = findobj('Tag','agent_txt');
+    delete(pAgent.UserData);
+    hold on;
+    pAgent.UserData = scatter(x,y,50,[0 1 0],'*');
+end
 
+function targetxpos_edit_Callback(hObject, eventdata)
+     hn = findobj('Tag','n_slide');
+    str = get(hObject,'string');
+    
+    if(str2double(str) > hn.Value)
+        hObject.UserData = hn.Value;
+        hObject.String = num2str(hn.Value);
+    else
+        hObject.UserData = str2double(str);
+    end
+    
+    targety = findobj('Tag','targetypos_edit');
+    x = hObject.UserData;
+    y = targety.UserData;
+    
+    pTarget = findobj('Tag','target_txt');
+    delete(pTarget.UserData);
+    hold on;
+    pTarget.UserData = scatter(x,y,50,[1 0 0],'*');
+end
+
+function targetypos_edit_Callback(hObject, eventdata)
+    hm = findobj('Tag','m_slide');
+    str = get(hObject,'string');
+    
+    if(str2double(str) > hm.Value)
+        hObject.UserData = hm.Value;
+        hObject.String = num2str(hm.Value);
+    else
+        hObject.UserData = str2double(str);
+    end
+    
+    targetx = findobj('Tag','targetxpos_edit');
+    x = targetx.UserData;
+    y = hObject.UserData;
+    
+    pTarget = findobj('Tag','target_txt');
+    delete(pTarget.UserData);
+    hold on;
+    pTarget.UserData = scatter(x,y,50,[1 0 0],'*');
 end
 
 function radius_slide_Callback(hObject, eventdata)
@@ -605,7 +742,8 @@ function radius_slide_Callback(hObject, eventdata)
     
     % update text box
     h = findobj('Tag','radius_txt');
-	h.String = hObject.Value;
+    str = sprintf('Radius of view = %d',hObject.Value);
+	h.String = str;
     
 end
 
@@ -833,7 +971,6 @@ end
 %
 
 % object cursor
-
 function SetAddObjGlobal(coord, dim)
     global objCoord;
     global objDim;
@@ -846,6 +983,14 @@ function [coord, dim] = GetAddObjGlobal()
     global objDim;
     coord = objCoord;
     dim = objDim;
+end
+
+
+
+% warning box
+function SetWarningGlobal(str)
+    global warning;
+    warning = str;
 end
 
 
