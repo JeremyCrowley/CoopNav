@@ -470,8 +470,20 @@ function simbutton_Callback(hObject,eventdata)
 
 
         set(hObject,'Enable','off');
-        [iterations,pDiscovered,pPOI,pAgent,pCell,pPath] = simulate(environment,envGraph,agentPos,targetPos,radOfView,dispPOI);
+        [iterations,pDiscovered,pPOI,pAgent,pCell,pPath, agentPath] = simulate(environment,envGraph,agentPos,targetPos,radOfView,dispPOI);
         set(hObject,'Enable','on');
+        
+        disp('AgentPath')
+        [mA, nA] = size(agentPath);
+        
+        agentCoord = zeros(2,nA);
+        for i = 1:nA
+            agentCoord(:,i) = transpose(ValToPosition(agentPath(i), environment)); 
+        end
+        
+        %mocap = CoordToMocap(agentCoord,environment)
+        %scatter(mocap(1,:),mocap(2,:));
+        
 
         hObject.UserData.discovered = pDiscovered;
         hObject.UserData.POI = pPOI;
@@ -479,7 +491,7 @@ function simbutton_Callback(hObject,eventdata)
         hObject.UserData.cell = pCell;
         hObject.UserData.path = pPath;
 
-        fprintf('Simulation Complete - %d iterations',iterations);
+        fprintf('Simulation Complete - %d iterations\n',iterations);
     end
 
 end

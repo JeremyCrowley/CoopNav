@@ -4,7 +4,7 @@
 % % % % % % % % % % % % % % % % % % % % % % % % 
 % create a 8x8 environment with 4 obstacles   %
 % % % % % % % % % % % % % % % % % % % % % % % % 
-function [iterations,pDiscovered,pPOI,pAgent,pCell,pPath] = simulate(E1,G,startCoord,targetCoord,radiusOfView,dispPOI)
+function [iterations,pDiscovered,pPOI,pAgent,pCell,pPath, agentPath] = simulate(E1,G,startCoord,targetCoord,radiusOfView,dispPOI)
     
     % convert sim parameter
     targetNode = PositionToVal(targetCoord,E1);
