@@ -17,7 +17,7 @@ function p = PlotDiscoveredEdge(circularEdgeLinkedList,env)
         
         
         
-        plot([c1(1),c2(1)],[c1(2),c2(2)],'color',[0 0 0],'LineWidth',3);
+        p(i) = plot([c1(1),c2(1)],[c1(2),c2(2)],'color',[0 0 0],'LineWidth',3);
         
     end
 end

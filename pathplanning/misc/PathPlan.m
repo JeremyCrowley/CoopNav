@@ -19,7 +19,15 @@ function [nextCoord, circularEdgeLinkedList, POI] = PathPlan(environment,G,agent
         for j = 1:numPOI
 
             [path,d] = shortestpath(G,agent.currentNode,POI(j));
-            costList(j) = PathCost(path,targetNode,environment);
+            distToTarget = PathCost(path,targetNode,environment);
+            
+            %crd = ValToPosition(POI(j),environment);
+            %fprintf('(%d,%d) - cost of %f\n      - dist of %f\n\n',crd(1),crd(2),distToTarget,d)
+            
+            % to add weight of path to the cost
+            % costList(j) = distToTarget+d;
+            
+            costList(j) = distToTarget;
         end
 
         [costMin, index] = min(costList);

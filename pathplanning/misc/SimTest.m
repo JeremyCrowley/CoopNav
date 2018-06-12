@@ -24,14 +24,13 @@ G = MakeGraph(E1);
 %E1 = AddSquare2D(E1,[12,1],2,7);
 %E1 = AddSquare2D(E1,[12,11],1,4);
 
-
 radiusOfView = 3;
 startCoord = [1, 1];
 targetCoord = [7,7];
-iterations = 10;
+dispPOI = 0;
 
 
-simulate(E1,G,startCoord,targetCoord,radiusOfView,iterations)
+simulate(E1,G,startCoord,targetCoord,radiusOfView,dispPOI)
 
 
 

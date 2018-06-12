@@ -4,6 +4,7 @@ function p = PlotGraphEdges(graphEdges)
 
     [edgeHeight,edgeLength] = size(graphEdges);
 
+    
     % draw arrows for directional graph edges
     for i = 1:edgeHeight
         
@@ -40,7 +41,7 @@ function p = PlotGraphEdges(graphEdges)
 
         
         % to show cost of path
-        quiver(tail(1),tail(2),vector(1),vector(2),0,'color',color);
+        p(i) = quiver(tail(1),tail(2),vector(1),vector(2),0,'color',color);
 
 
     end

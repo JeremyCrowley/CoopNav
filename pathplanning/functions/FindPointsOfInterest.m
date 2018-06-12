@@ -63,8 +63,11 @@ function POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, 
                     % go back and make POIs
                     for j = 1:freeSpaceCounter
                         if(mod(j,ceil(freeSpaceThreshold/2)) == 0)
-                            POIcount = POIcount + 1;
-                            POI(POIcount) = circularEdgeLinkedList.node(i-j).nodeNum;
+                            
+                            if(~IsNodeEdgeEnv(circularEdgeLinkedList.node(i-j).nodeNum,env))
+                                POIcount = POIcount + 1;
+                                POI(POIcount) = circularEdgeLinkedList.node(i-j).nodeNum;
+                            end
                         end
                     end
                     

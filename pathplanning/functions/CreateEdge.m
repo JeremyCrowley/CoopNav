@@ -13,6 +13,9 @@ function G = CreateEdge(G, node1Val, node1Pos, node2Val, node2Pos, env)
 
     %[envHeight, envLength] = size(env.map);
 
+	freespaceMult = 1;
+    obstboundMult = 10;
+    obstMult = 10000;
     
     % determine if the nodes are diagnal or straight
     diag = 0;
@@ -23,20 +26,20 @@ function G = CreateEdge(G, node1Val, node1Pos, node2Val, node2Pos, env)
     % to free space
     if(node2Val == 0)
         if(diag)
-            weight_12 = sqrt(2);
+            weight_12 = sqrt(freespaceMult^2 + freespaceMult^2);
         else
-            weight_12 = 1;
+            weight_12 = freespaceMult;
         end
     % to obstacle boundary
     elseif(node2Val == 1)
         if(diag)
-            weight_12 = sqrt(8);
+            weight_12 = sqrt(obstboundMult^2 + obstboundMult^2);
         else
-            weight_12 = 2;
+            weight_12 = obstboundMult;
         end
 	% to obstacle
     elseif(node2Val == 2)        
-        weight_12 = 1000;
+        weight_12 = obstMult;
 	% incorrect relation between two nodes
     else
         error('Error: Invalid node2 value %d\n',node2Val);
@@ -45,20 +48,20 @@ function G = CreateEdge(G, node1Val, node1Pos, node2Val, node2Pos, env)
     % to free space
     if(node1Val == 0)
         if(diag)
-            weight_21 = sqrt(2);
+            weight_21 = sqrt(freespaceMult^2 + freespaceMult^2);
         else
-            weight_21 = 1;
+            weight_21 = freespaceMult;
         end
     % to obstacle boundary
     elseif(node1Val == 1)
         if(diag)
-            weight_21 = sqrt(8);
+            weight_21 = sqrt(obstboundMult^2 + obstboundMult^2);
         else
-            weight_21 = 2;
+            weight_21 = obstboundMult;
         end
 	% to obstacle
     elseif(node1Val == 2)        
-        weight_21 = 1000;
+        weight_21 = obstMult;
 	% incorrect relation between two nodes
     else
         error('Error: Invalid node1 value %d\n',node1Val);
