@@ -1,4 +1,6 @@
 % p = PlotSquare(center, p)
+%
+% plots a square in the cell decomposed env
 
 function p = PlotSquare(center,color,transparency)
 

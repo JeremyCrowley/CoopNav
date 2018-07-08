@@ -1,3 +1,7 @@
+% p = PlotPOI(POI, env)
+%
+% plots the points of interest in the environment
+
 
 function p = PlotPOI(POI, env)
 

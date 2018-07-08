@@ -1,4 +1,7 @@
 % cost = PathCost(path,targetNode,env)
+%
+% calculates the cost of the planned trajectory as the distance between the
+% final coordinate in the trajectory and the target coordinate
 
 function cost = PathCost(path,targetNode,env)
 

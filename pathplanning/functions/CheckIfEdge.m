@@ -1,4 +1,6 @@
 % edgeBool = CheckIfEdge(env, nodeCoords)
+%
+% checks if the node is on the discovered edge of the environment.
 
 
 function edgeBool = CheckIfEdge(env, nodeCoords)

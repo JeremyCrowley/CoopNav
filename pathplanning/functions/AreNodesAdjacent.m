@@ -1,4 +1,6 @@
 % adjacentBool = AreNodesAdjacent(node1Num, node2Num)
+%
+% checks if two nodes are adjacent to eachother
 
 function adjacentBool = AreNodesAdjacent(node1Num, node2Num, env)
 

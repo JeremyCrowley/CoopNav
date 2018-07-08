@@ -1,3 +1,5 @@
+%% main file to run - contains all callbacks and gui functionality to run simulations
+
 close all; clear; clc;
 
 

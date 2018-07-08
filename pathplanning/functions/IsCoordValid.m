@@ -1,6 +1,6 @@
 % validBool = IsCoordValid(coordinates, env)
 %
-% check coordinate is valid
+% check if coordinate is valid (i.e. within the bounds of the environment)
 
 
 function validBool = IsCoordValid(coordinate, env)

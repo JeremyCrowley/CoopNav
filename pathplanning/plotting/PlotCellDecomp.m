@@ -1,4 +1,6 @@
 % p = PlotCellDecomp(env)
+%
+% plots the cell decomposed environment
 
 function p = PlotCellDecomp(env)
 

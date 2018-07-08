@@ -1,4 +1,7 @@
-% function nextEdgeNodeVal = GetNextEdgeNode(curEdgeNodeVal,adjEdgeVal,lastMove) 
+% nextEdgeNodeVal = GetNextEdgeNode(curEdgeNodeVal,adjEdgeVal,lastMove) 
+%
+% returns the next edge node in the discovered edge, this is used in the
+% pattern based point of interest detection algorithm
 
 function [nextNode, dir] = GetNextEdgeNode(curEdgeNodeVal,adjEdgeVal,lastMove, env) 
     

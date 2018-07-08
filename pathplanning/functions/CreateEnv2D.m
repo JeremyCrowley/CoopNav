@@ -1,7 +1,7 @@
 % env = CreateEnv2D(length,height)
 %
-% creates a 2 dimensional map for simulation
-%
+% creates a 2 dimensional map/environment for simulation
+
 
 function env = CreateEnv2D(height,length)
     env.map = zeros(height,length);

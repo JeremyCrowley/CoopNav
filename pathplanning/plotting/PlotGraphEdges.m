@@ -1,4 +1,6 @@
 % p = PlotGraphEdges(graphEdges)
+%
+% plots the edges of the graph in the cell decomposed environment
 
 function p = PlotGraphEdges(graphEdges)
 

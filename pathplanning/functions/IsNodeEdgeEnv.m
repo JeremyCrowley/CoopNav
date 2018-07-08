@@ -1,4 +1,6 @@
-
+% edgeMapBool = IsNodeEdgeEnv(nodeNum, env)
+%
+% checks if the node is on the edge of the environment
 
 function edgeMapBool = IsNodeEdgeEnv(nodeNum, env)
 

@@ -1,4 +1,7 @@
-% POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, env)
+% POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, env, targetNode)
+%
+% locates the points of interest in the environment
+
 
 function POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, env, targetNode)
     

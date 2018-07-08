@@ -1,3 +1,6 @@
+% [nextCoord, circularEdgeLinkedList, POI] = PathPlan(environment,G,agent,targetNode)
+%
+% wrapper function to plan the path for the agent given the current state
 
 
 function [nextCoord, circularEdgeLinkedList, POI] = PathPlan(environment,G,agent,targetNode)

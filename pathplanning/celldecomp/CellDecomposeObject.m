@@ -1,4 +1,7 @@
-
+% function env = CellDecomposeObject(xlim, ylim, corner, width, height, env)
+%
+% takes in obstacle location data and adds the cell decomposed
+% representation of the obstacle/object to the environment
 
 function env = CellDecomposeObject(xlim, ylim, corner, width, height, env)
     [m,n] = size(env.map);

@@ -1,3 +1,7 @@
+% p = PlotAgentPath(agentPath, env)
+%
+% plots the path of the agent
+
 
 function p = PlotAgentPath(agentPath, env)
 
@@ -10,8 +14,5 @@ function p = PlotAgentPath(agentPath, env)
         
         p(i) = plot([c1(1),c2(1)],[c1(2),c2(2)]);
     end
-    
-    
-
 
 end

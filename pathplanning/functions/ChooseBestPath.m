@@ -1,4 +1,7 @@
 % nextNode = ChooseBestPath(paths, targetNode, env)
+%
+% minimizes the cost function and selects the trajectory with the smallest
+% cost
 
 function nextNode = ChooseBestPath(paths, targetNode, env)
     

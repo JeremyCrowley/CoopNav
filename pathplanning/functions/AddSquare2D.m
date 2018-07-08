@@ -1,4 +1,6 @@
 % env = AddSquare2D(environment,corner,length,height)
+%
+% Adds a cell decomposed obstacle to the environment
 
 function env = AddSquare2D(env,corner,sqrLength,sqrHeight)
     
@@ -59,21 +61,7 @@ function env = AddSquare2D(env,corner,sqrLength,sqrHeight)
     end
     
     env.map(arrCornerIndex(1)-sqrHeight+1:arrCornerIndex(1),arrCornerIndex(2):arrCornerIndex(2)+sqrLength-1) = 2*ones(sqrHeight,sqrLength);
-    
-    % vertices of the square
-    %{
-    v1 = corner;
-    v2 = [corner(1)+sqrHeight-1    ,corner(2)];
-    v3 = [corner(1)+sqrHeight-1    ,corner(2)+sqrLength-1];
-    v4 = [corner(1)             ,corner(2)+sqrLength-1];
-    
-    % add object to environment list of objs
-    if(env.numObj == 0)
-        env.objs(:,:,1) = [v1;v2;v3;v4];
-    else
-        env.objs(:,:,end+1) = [v1;v2;v3;v4];
-    end
-    %}
+
     % increment obj count
     env.numObj = env.numObj+1; 
     

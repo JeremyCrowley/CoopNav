@@ -1,3 +1,6 @@
+% p = PlotDiscovered(env)
+%
+% plots black cells over the undiscovered cells in the environment
 
 function p = PlotDiscovered(env)
 

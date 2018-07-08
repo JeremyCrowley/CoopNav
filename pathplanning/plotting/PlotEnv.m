@@ -1,5 +1,7 @@
 % p = PlotEnv(env, length, height)
-
+%
+% plots the environment
+%
 % PROBLEMS WITH THIS FUNCTION
 
 function p = PlotEnv(env, length, height)

@@ -1,3 +1,7 @@
+% edgeNodes = FindEdgeNodes(env)
+%
+% creates a list of all the nodes on the discovered edge of the environment
+
 
 function edgeNodes = FindEdgeNodes(env)
 

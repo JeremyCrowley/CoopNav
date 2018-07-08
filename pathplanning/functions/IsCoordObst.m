@@ -1,4 +1,6 @@
-
+% bool = IsCoordObst(coord,env)
+%
+% checks if the node/coordinate is an obstacle
 
 function bool = IsCoordObst(coord,env)
 

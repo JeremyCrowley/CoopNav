@@ -1,8 +1,7 @@
 % p = PlotGraph(GraphEdges)
 % 
 % plots the graph with colored edges based on the weight of the edge
-%
-% GraphEdges - the edges of the graph
+
 
 function [pCell, pDiscovered, pPOI, pAgent] = PlotGraph(graphEdges,circularEdgeLinkedList,POI,env,agent,pCellOld,pDiscoveredOld, pPOIOld, pAgentOld,dispPOI)
 

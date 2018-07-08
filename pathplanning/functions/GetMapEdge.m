@@ -1,4 +1,7 @@
 % edgeCircle = GetMapEdge(env)
+%
+% creates a circular linked list of the nodes on the discovered edge of the
+% map, used for the pattern based point of interest detectin algorithm
 
 function edgeCircle = GetMapEdge(env)
 

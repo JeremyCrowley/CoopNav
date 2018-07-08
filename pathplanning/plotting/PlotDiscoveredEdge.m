@@ -1,4 +1,6 @@
 % p = PlotDiscoveredEdge(circularEdgeLinkedList)
+%
+% plots the discovered edge in the environment
 
 function p = PlotDiscoveredEdge(circularEdgeLinkedList,env)
 

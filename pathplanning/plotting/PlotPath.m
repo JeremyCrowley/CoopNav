@@ -1,3 +1,7 @@
+% p = PlotPath(oldPathHandle, path, env, color)
+%
+% plots the path of the agent
+
 
 function p = PlotPath(oldPathHandle, path, env, color)
     

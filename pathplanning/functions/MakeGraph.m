@@ -1,6 +1,6 @@
 % G = MakeGraph(env)
 %
-% creates a connect 2d graph from all the nodes in the env
+% creates a connect 2d di-graph representation of all the nodes in the env
 
 
 function G = MakeGraph(env)

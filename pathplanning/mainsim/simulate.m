@@ -1,9 +1,9 @@
+% [iterations,pDiscovered,pPOI,pAgent,pCell,pPath,agentPath,distanceToTarget,timeline] = simulate(E1,G,startCoord,targetCoord,radiusOfView,dispPOI)
+%
+% function to simulate an agent in an environment with the goal of reaching
+% a target coordinate
 
-
-%% Navigation with agent
-% % % % % % % % % % % % % % % % % % % % % % % % 
-% create a 8x8 environment with 4 obstacles   %
-% % % % % % % % % % % % % % % % % % % % % % % % 
+ 
 function [iterations,pDiscovered,pPOI,pAgent,pCell,pPath,agentPath,distanceToTarget,timeline] = simulate(E1,G,startCoord,targetCoord,radiusOfView,dispPOI)
     
     % convert sim parameter
