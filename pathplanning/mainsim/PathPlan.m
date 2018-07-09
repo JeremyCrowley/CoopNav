@@ -12,32 +12,22 @@ function [nextCoord, circularEdgeLinkedList, POI] = PathPlan(environment,G,agent
         freeSpaceThreshold = 1;
         POI = FindPointsOfInterest(circularEdgeLinkedList, freeSpaceThreshold, environment, targetNode);
 
-
-
         numPOI = length(POI);
 
         % find shortests paths
-
         costList = zeros(1,numPOI);
         for j = 1:numPOI
 
             [path,d] = shortestpath(G,agent.currentNode,POI(j));
             distToTarget = PathCost(path,targetNode,environment);
             
-            %crd = ValToPosition(POI(j),environment);
-            %fprintf('(%d,%d) - cost of %f\n      - dist of %f\n\n',crd(1),crd(2),distToTarget,d)
-            
-            % to add weight of path to the cost
-            % costList(j) = distToTarget+d;
-            
             costList(j) = distToTarget;
         end
-
+    
+        % recalculate the path for the best trajectory
         [costMin, index] = min(costList);
         [path,d] = shortestpath(G,agent.currentNode,POI(index));
 
-
-        
 
         % choose next node
         if(length(path) == 1)

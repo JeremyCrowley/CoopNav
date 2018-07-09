@@ -1,0 +1,51 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Path Planning in Uncertain Environment\
+\
+This package contains the necessary files to run a GUI that interfaces with a path planning library. These libraries were developed for the undergraduate thesis of Jeremy Crowley. \
+\
+The main file \'93GUI.m\'94 launches a user interface that contains the callback functions for the path planning library. The organization of the package is as follows:\
+\
+/celldecomp 		\'97 functions for cell decomposing objects detected by the Time of Flight sensor\
+/dijkstra 		\'97 Dijkstra\'92s algorithm taken from {\field{\*\fldinst{HYPERLINK "https://www.mathworks.com/matlabcentral/fileexchange/12850-dijkstra-s-shortest-path-algorithm"}}{\fldrslt https://www.mathworks.com/matlabcentral/fileexchange/12850-dijkstra-s-shortest-path-algorithm}}\
+/environment 	\'97 files for saving and loading environment into the GUI (all files are .mat type)\
+/experiment		\'97 flies used for executing the experiment in the motion capture system\
+/function 		\'97 general functions for creating and analyzing the environment\
+GUI.m			\'97 main file to run to launch user interface\
+/mainsim		\'97 functions that implement the simulation\
+/misc			\'97 miscellaneous functions relating to generating figures and testing\
+PathPlanning\'85	\'97 thesis paper\
+/plotting		\'97 functions associated with the plotting of the simulation\
+README		\'97 this file\
+/thesis			\'97 files used to generate figure for the thesis itself\
+/transformations	\'97 transformation functions between coordinates, array indices, and node values\
+\
+\
+\
+\
+A notes that may be useful.\
+\
+\
+Location of call to Dijkstra\'92s algorithm:\
+\
+line 21 in /mainsim/PathPlan.m\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs20 \cf0 [path,d] = shortestpath(G,agent.currentNode,POI(j));\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \
+\
+\
+
+\f1 \
+
+\f0 \
+\
+\
+}
